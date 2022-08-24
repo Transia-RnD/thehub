@@ -15,7 +15,7 @@ The Hub is a central location to hold sidechain builds and validation files. Eac
 
 To build the debug image manually make sure you are logged into docker and run the following;
 
-`./build_hub --type=debug --docker=transia --genesis --github=https://github.com/XRPLF/rippled.git --branch=amm`
+`./build_hub --docker=transia --genesis --github=https://github.com/XRPLF/rippled.git --branch=amm`
 
 This will produce the following: `docker.io/transia/amm:genesis`.
 
