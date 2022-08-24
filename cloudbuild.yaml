@@ -14,7 +14,7 @@ steps:
       'build',
       '-t', 'gcr.io/$PROJECT_ID/$_PACKAGE_I_BRANCH:$COMMIT_SHA',
       '-f', 'Dockerfile',
-      '--cache-from', 'gcr.io/$PROJECT_ID/$_PACKAGE_I_BRANCH:latest', './dist',
+      '--cache-from', 'gcr.io/$PROJECT_ID/$_PACKAGE_I_BRANCH:latest', '.',
       '--build-arg', 'REPO=$_PACKAGE_I_REPO',
       '--build-arg', 'BRANCH=PaychanAndEscrowForTokens',
       '--build-arg', 'BOOST_ROOT=/io/boost_1_75_0',
