@@ -36,4 +36,6 @@ images:
 options:
   substitutionOption: ALLOW_LOOSE
   logging: CLOUD_LOGGING_ONLY
-timeout: 3600s
+  pool:
+    name: 'projects/$WORKERPOOL_PROJECT_ID/locations/$REGION/workerPools/rippled'
+timeout: 600s
