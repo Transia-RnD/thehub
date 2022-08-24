@@ -1,14 +1,17 @@
-FROM ubuntu:bionic as cloner
-WORKDIR /app
-RUN git clone git@github.com:RichardAH/rippled.git
-RUN cd rippled && git checkout PaychanAndEscrowForTokens
+FROM gcr.io/metaxrplorer/icv2:latest
 
-FROM transia/boost:1.75.0 as builder
-WORKDIR /app
-COPY --from=cloner /app/rippled /app
-RUN mkdir my_build && \
-    cd my_build && \
-    cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Debug ..
-    cmake --build . -- -j 4
+LABEL maintainer="w@xrpl-labs.com"
 
-ENTRYPOINT /bin/bash
+RUN export LANGUAGE=C.UTF-8; export LANG=C.UTF-8; export LC_ALL=C.UTF-8; export DEBIAN_FRONTEND=noninteractive
+
+COPY entrypoint /entrypoint.sh
+
+RUN chmod +x /entrypoint.sh && \
+    echo '#!/bin/bash' > /usr/bin/server_info && echo '/entrypoint.sh server_info' >> /usr/bin/server_info && \
+    chmod +x /usr/bin/server_info
+
+RUN ln -s /opt/ripple/bin/rippled /usr/bin/rippled
+
+EXPOSE 80 443 5005 6006 51235
+
+ENTRYPOINT [ "/entrypoint.sh" ]

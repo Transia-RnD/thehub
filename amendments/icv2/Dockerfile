@@ -1,30 +1,17 @@
-FROM ubuntu:bionic as cloner
+FROM gcr.io/metaxrplorer/icv2:latest
+
 WORKDIR /app
 
-ARG REPO
-ENV REPO $REPO
-ARG BRANCH
-ENV BRANCH $BRANCH
+LABEL maintainer="w@xrpl-labs.com"
 
-RUN apt-get update && \
-    apt-get upgrade -y && \
-    apt-get install -y git
+RUN export LANGUAGE=C.UTF-8; export LANG=C.UTF-8; export LC_ALL=C.UTF-8; export DEBIAN_FRONTEND=noninteractive
 
-RUN git clone $REPO
-RUN cd rippled && git checkout $BRANCH
+COPY entrypoint /entrypoint.sh
 
-FROM transia/builder:1.75.0 as builder
-WORKDIR /app
-COPY --from=cloner /app/rippled /app
+RUN chmod +x /entrypoint.sh && \
+    echo '#!/bin/bash' > /usr/bin/server_info && echo '/entrypoint.sh server_info' >> /usr/bin/server_info && \
+    chmod +x /usr/bin/server_info
 
-ARG BOOST_ROOT
-ENV BOOST_ROOT $BOOST_ROOT
-ARG Boost_LIBRARY_DIRS
-ENV Boost_LIBRARY_DIRS $Boost_LIBRARY_DIRS
-ARG BOOST_INCLUDEDIR
-ENV BOOST_INCLUDEDIR $BOOST_INCLUDEDIR
+EXPOSE 80 443 5005 6006 51235
 
-RUN mkdir my_build && cd my_build && cmake ..
-RUN cd my_build && cmake --build .
-
-ENTRYPOINT /bin/bash
+ENTRYPOINT [ "/entrypoint.sh" ]
