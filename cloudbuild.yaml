@@ -37,5 +37,5 @@ options:
   substitutionOption: ALLOW_LOOSE
   logging: CLOUD_LOGGING_ONLY
   pool:
-    name: 'projects/$WORKERPOOL_PROJECT_ID/locations/$REGION/workerPools/rippled'
+    name: 'projects/$PROJECT_ID/locations/us-central1/workerPools/rippled'
 timeout: 600s
