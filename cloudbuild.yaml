@@ -1,4 +1,4 @@
-# gcloud builds submit --config ./tools/cloudbuild.yaml --region=us-central1 --substitutions=_REPO=https://github.com/RichardAH/rippled.git,_BRANCH=PaychanAndEscrowForTokens,_NAME=icv2
+# gcloud builds submit --config ./tools/cloudbuild.yaml --region=us-central1 --substitutions=_REPO=https://github.com/RichardAH/rippled.git,_BRANCH=PaychanAndEscrowForTokens,_NAME=icv2,_DIR=amendments
 # NOTE: This is triggered for each sidechain.
 steps:
   # BUILD RIPPLED
@@ -41,25 +41,11 @@ steps:
       'gcr.io/$PROJECT_ID/$_NAME:deploy', 
       '.'
     ]
-    dir: 'amendments/icv2'
+    dir: '$_DIR/$_NAME'
   # Push the container image to Container Registry
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'gcr.io/$PROJECT_ID/$_NAME:deploy']
-  # Deploy container image to Cloud Run
-  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-    args: [
-      'gcloud',
-      'beta',
-      'run',
-      'deploy',
-      # '--allow-unauthenticated',
-      '$_NAME',
-      '--platform', 'managed',
-      '--image', 'gcr.io/$PROJECT_ID/$_NAME:deploy',
-      '--region', 'us-central1',
-      '--project', '$PROJECT_ID',
-      # '--service-account', '$_PACKAGE_I_SA@$PROJECT_ID.iam.gserviceaccount.com',
-    ]
+  # Deploy container image Kubes
 images:
   - 'gcr.io/$PROJECT_ID/$_NAME:$COMMIT_SHA'
   - 'gcr.io/$PROJECT_ID/$_NAME:deploy'

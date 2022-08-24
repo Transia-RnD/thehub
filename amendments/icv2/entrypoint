@@ -16,4 +16,4 @@ if [[ "$rippledconfig" -gt "0" && "$validatorstxt" -gt "0" ]]; then
 fi
 
 # Start rippled, Passthrough other arguments
-exec /deploy/rippled -a --start --conf /etc/opt/ripple/rippled.cfg "$@"
+exec /app/rippled --start --conf /etc/opt/ripple/rippled.cfg "$@"

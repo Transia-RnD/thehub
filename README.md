@@ -45,3 +45,5 @@ Enter into docker builder for testing.
 Build amendment:
 
 `docker build --platform=linux/amd64 --tag transia/icv2:latest . -f Dockerfile`
+
+`docker builder prune`

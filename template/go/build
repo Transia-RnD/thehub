@@ -1,0 +1,20 @@
+#!/bin/bash
+# 
+
+self(){
+  DIR=$( cd "$( dirname "$0" )/" && pwd)
+  echo $DIR
+}
+
+echo "Stopping containers"
+docker ps -a|grep $1/$2:latest|cut -d " " -f 1 |xargs -I___ docker stop ___
+
+if [[ $(docker images -a|grep $1/$2:latest|wc -l) -gt "0" ]]; then
+  echo "Removing image"
+  docker rmi -f $1/$2:latest
+fi
+
+echo "Building image"
+docker build --target $3 --tag $1/$2:latest $(self)/../.
+
+echo "Done, you can now run $(self)/up"

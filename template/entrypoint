@@ -8,6 +8,7 @@ mkdir -p /config
 if [[ "$rippledconfig" -gt "0" && "$validatorstxt" -gt "0" ]]; then
 
     echo "Existing rippled config at host /config/, using them."
+    mkdir -p /etc/opt/ripple
 
     /bin/cat /config/rippled.cfg > /etc/opt/ripple/rippled.cfg
     /bin/cat /config/validators.txt > /etc/opt/ripple/validators.txt
@@ -15,4 +16,4 @@ if [[ "$rippledconfig" -gt "0" && "$validatorstxt" -gt "0" ]]; then
 fi
 
 # Start rippled, Passthrough other arguments
-exec /opt/ripple/bin/rippled --start --conf /etc/opt/ripple/rippled.cfg "$@"
+exec /app/rippled --start --conf /etc/opt/ripple/rippled.cfg "$@"
