@@ -39,4 +39,4 @@ options:
   logging: CLOUD_LOGGING_ONLY
   pool:
     name: 'projects/$PROJECT_ID/locations/us-central1/workerPools/rippled'
-timeout: 3600s
+timeout: 6600s

@@ -15,8 +15,8 @@ The Hub is a central location to hold sidechain builds and validation files. Eac
 > Someone will review and once approved it is added to the build process.
 
 5. Receive a build confirmation. `gcr.io/metaxrplorer/icv2:latest`
-6. Receive a deploy confirmation. (Must have setup with Transia)
-7. Changes to the repo/branch you provided would trigger a build.
+6. Receive a deploy confirmation. Must have setup with Transia. We dont deploy yet.
+7. Changes to the repo/branch you provided would trigger a build. (SOON)
 
 <!-- To build the debug image manually make sure you are logged into docker and run the following;
 
