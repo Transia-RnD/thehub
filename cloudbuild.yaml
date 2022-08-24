@@ -1,7 +1,7 @@
 # gcloud builds submit --config ./tools/cloudbuild.yaml --region=us-central1 --substitutions=_REPO=https://github.com/RichardAH/rippled.git,_BRANCH=PaychanAndEscrowForTokens,_NAME=icv2
 # NOTE: This is triggered for each sidechain.
 steps:
-  # RIPPLED
+  # BUILD RIPPLED
   # Pull the latest image
   - name: 'gcr.io/cloud-builders/docker'
     entrypoint: 'bash'
@@ -28,12 +28,41 @@ steps:
     args: ['push', 'gcr.io/$PROJECT_ID/$_NAME:$COMMIT_SHA']
   # Tag the image
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['tag', 'gcr.io/$PROJECT_ID/$_NAME:$COMMIT_SHA', 'gcr.io/$PROJECT_ID/$_NAME:$COMMIT_SHA']
+    args: ['tag', 'gcr.io/$PROJECT_ID/$_NAME:$COMMIT_SHA', 'gcr.io/$PROJECT_ID/$_NAME:latest']
   # Push the image
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'gcr.io/$PROJECT_ID/$_NAME:$COMMIT_SHA']
+    args: ['push', 'gcr.io/$PROJECT_ID/$_NAME:latest']
+  # DEPLOY RIPPLED
+  # Build the container image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [
+      'build', 
+      '-t', 
+      'gcr.io/$PROJECT_ID/$_NAME:deploy', 
+      '.'
+    ]
+    dir: 'amendments/icv2'
+  # Push the container image to Container Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/$PROJECT_ID/$_NAME:deploy']
+  # Deploy container image to Cloud Run
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    args: [
+      'gcloud',
+      'beta',
+      'run',
+      'deploy',
+      # '--allow-unauthenticated',
+      '$_NAME',
+      '--platform', 'managed',
+      '--image', 'gcr.io/$PROJECT_ID/$_NAME:deploy',
+      '--region', 'us-central1',
+      '--project', '$PROJECT_ID',
+      # '--service-account', '$_PACKAGE_I_SA@$PROJECT_ID.iam.gserviceaccount.com',
+    ]
 images:
   - 'gcr.io/$PROJECT_ID/$_NAME:$COMMIT_SHA'
+  - 'gcr.io/$PROJECT_ID/$_NAME:deploy'
 options:
   substitutionOption: ALLOW_LOOSE
   logging: CLOUD_LOGGING_ONLY

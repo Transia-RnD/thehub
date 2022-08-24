@@ -41,3 +41,7 @@ Misc Commands:
 Enter into docker builder for testing.
 
 `docker run --rm -it transia/builder:1.75.0`
+
+Build amendment:
+
+`docker build --platform=linux/amd64 --tag transia/icv2:latest . -f Dockerfile`

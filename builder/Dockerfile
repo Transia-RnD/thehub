@@ -26,7 +26,15 @@ ENV Boost_LIBRARY_DIRS $Boost_LIBRARY_DIRS
 ARG BOOST_INCLUDEDIR
 ENV BOOST_INCLUDEDIR $BOOST_INCLUDEDIR
 
-RUN mkdir my_build && cd my_build && cmake .. -Wno-dev
-RUN cd my_build && cmake --build . -j17 && strip -s rippled
+RUN mkdir build && cd build && cmake .. -Wno-dev
+RUN cd build && cmake --build . -j17 && strip -s rippled
+
+ENTRYPOINT /bin/bash
+
+FROM ubuntu:kinetic as polisher
+
+WORKDIR /app
+
+COPY --from=builder /app/build/rippled /app/rippled
 
 ENTRYPOINT /bin/bash
