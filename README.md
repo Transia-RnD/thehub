@@ -2,18 +2,23 @@
 
 The Hub is a central location to hold sidechain builds and validation files. Each sidechain/amendment has its own directory inside the hub.
 
-> The reason the hub exists is because we need to run tests in a standalone enviroment for each ammendment.
+> The reason the hub exists is because we need to run tests in a standalone enviroment for each ammendment. 
 
 ## Create new ammendment or sidechain in the hub
 
-1. Copy the template directory in `template`.
-2. Rename the directory to match the rippled branch name. ie. `hooks` -> `hooks`.
-3. Configure your `rippled.cfg` file to include the amendment.
-4. Create a pull request.
+1. Clone this repository
+2. Copy the template directory in `template`.
+3. Rename the directory to match the rippled branch name EXACTLY. ie. `hooks` -> `hooks`.
+4. Configure your `rippled.cfg` file to include the amendment.
+5. Create a pull request. Include the rippled branch and repository if different than XRPLF/rippled.
 
-> XRPLF will review and then add the following to the daily build script.
+> Someone will review and once approved it is added to the build process.
 
-To build the debug image manually make sure you are logged into docker and run the following;
+5. Receive a build confirmation. `gcr.io/metaxrplorer/icv2:latest`
+6. Receive a deploy confirmation. (Must have setup with Transia)
+7. Changes to the repo/branch you provided would trigger a build.
+
+<!-- To build the debug image manually make sure you are logged into docker and run the following;
 
 `./build_hub --docker=transia --genesis --github=https://github.com/XRPLF/rippled.git --branch=amm`
 
@@ -21,7 +26,7 @@ This will produce the following: `docker.io/transia/amm:genesis`.
 
 > It might be preferrable to add `--local` flag to the command to build the docker locally.
 
-For production you would remove the --genesis flag and this would produce: `docker.io/transia/amm:latest`.
+For production you would remove the --genesis flag and this would produce: `docker.io/transia/amm:latest`. -->
 
 
 Tools/Builders:
