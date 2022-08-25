@@ -1,5 +1,12 @@
 # Rippled (node)
 
+## TODO:
+
+- Genesis Build:
+
+You would need to generate a new validator list. Also look into being able to change that account. There is a PR
+
+
 This container allows you to run a `rippled` node. No config required.
 
 The server will keep a history of **only 256 ledgers**. You can change this value in the config (more about the config in this readme).
@@ -16,8 +23,9 @@ This container is running on `ubuntu:kinetic`.
 
 If you downloaded / cloned the [Github repo](https://github.com/WietseWind/docker-rippled) you got yourself a few scripts to get started. In the `./go` folder, the following scripts are available, run:
 
-- `go/build transia icv2 production` to build the production container image (tag: `rippled`)
-- `go/build transia icv2 genesis` to build the genesis container image (tag: `rippled`)
+> `go/build [username] [branch] [version | latest] [production | genesis]`
+
+- `go/build transia icv2 0.0.1 production` to build the production container image (tag: `rippled`)
 - `go/up transia icv2` to create a new container named `rippled` and setup the port and persistent config (*1)
 - `go/down transia icv2` to stop and remove the container `rippled`
 
@@ -33,7 +41,7 @@ After spinning the container up, you will see the rippled log. You should see a 
 
 If you want to build the image manually, use (you can change the tag):
 
-`docker build --tag transia/icv2:latest --target=genesis .`
+`docker build --tag transia/icv2:0.0.1 --target=genesis .`
 
 > Notice the target `genesis`. This is a standalone build.
 
@@ -52,7 +60,7 @@ docker run -dit \
     --name rippled \
     -p 80:80 \
     -v /my/local/disk/icv2-config/:/config/ \
-    transia/icv2:latest
+    transia/icv2:0.0.1
 ```
 
 You can change the `--name` and **make sure you specify a valid local full path for your volume source, instead of `/my/local/disk/xrpld-config/`**.
@@ -148,3 +156,5 @@ Resources:
 
 Example Config: https://github.com/ripple/rippled/blob/develop/cfg/rippled-example.cfg
 Node Config Generator: https://xrplf.github.io/xrpl-node-configurator/#/
+
+`./release.sh transia icv2 latest`

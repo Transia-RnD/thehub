@@ -17,10 +17,10 @@ RUN chmod +x /entrypoint.sh && \
 EXPOSE 80 443 5005 6006 51235
 
 FROM base AS genesis
-RUN echo "BUILDING GENESIS RIPPLED"
+RUN echo "GENESIS RIPPLED"
 ENTRYPOINT [ "/entrypoint.sh", "-a" ]
 
 
 FROM base AS production
-RUN echo "BUILDING PRODUCTION RIPPLED"
+RUN echo "PRODUCTION RIPPLED"
 ENTRYPOINT [ "/entrypoint.sh" ]
