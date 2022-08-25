@@ -22,8 +22,8 @@ steps:
       '--build-arg', 'VERSION=$_VERSION',
       '--build-arg', 'BOOST_ROOT=/io/boost_1_75_0',
       '--build-arg', 'Boost_LIBRARY_DIRS=/io/boost_1_75_0/libs',
-      '--build-arg', 'BOOST_INCLUDEDIR=/io/boost_1_75_0/boost'
-      '--build-arg', 'GITHUB_TOKEN=$_GITHUB_TOKEN',
+      '--build-arg', 'BOOST_INCLUDEDIR=/io/boost_1_75_0/boost',
+      '--build-arg', 'GITHUB_TOKEN=$_GITHUB_TOKEN'
     ]
     dir: 'builder'
   # Push the image
