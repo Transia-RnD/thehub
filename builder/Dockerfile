@@ -1,8 +1,6 @@
 FROM ubuntu:bionic as cloner
 WORKDIR /app
 
-ARG TYPE
-ENV TYPE $TYPE
 ARG REPO
 ENV REPO $REPO
 ARG BRANCH
@@ -35,15 +33,15 @@ FROM ubuntu:kinetic as releaser
 
 WORKDIR /app
 
-COPY . .
-COPY --from=builder /app/build/rippled /app/rippled
-
 ARG NAME
 ENV NAME $NAME
 ARG VERSION
 ENV VERSION $VERSION
 ARG GITHUB_TOKEN
 ENV GITHUB_TOKEN $GITHUB_TOKEN
+
+COPY . .
+COPY --from=builder /app/build/rippled /app/rippled
 
 RUN apt-get update && \
     apt-get upgrade -y && \
