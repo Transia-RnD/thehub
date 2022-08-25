@@ -29,31 +29,6 @@ RUN cd build && cmake --build . -j17 && strip -s rippled
 
 ENTRYPOINT /bin/bash
 
-FROM ubuntu:kinetic as releaser
-
-WORKDIR /app
-
-ARG NAME
-ENV NAME $NAME
-ARG VERSION
-ENV VERSION $VERSION
-ARG GH_TOKEN
-ENV GH_TOKEN $GH_TOKEN
-
-COPY . .
-COPY --from=builder /app/build/rippled /app/rippled
-
-RUN apt-get update && \
-    apt-get upgrade -y && \
-    apt-get install -y zip && \
-    apt-get install -y gh && \
-    apt-get install -y git
-
-RUN zip -r /app/rippled.zip /app/rippled
-RUN gh release delete $NAME-$VERSION -y
-RUN gh release create $NAME-$VERSION --generate-notes && \
-    gh release upload $NAME-$VERSION /app/rippled.zip
-
 FROM ubuntu:kinetic as deployer
 
 WORKDIR /app

@@ -3,4 +3,5 @@ release
 release.pub
 rippled
 rippled.zip
-release.sh
+release.info
+# release.sh
