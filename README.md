@@ -44,6 +44,8 @@ Enter into docker builder for testing.
 
 `docker run -d -it --name icv2 gcr.io/metaxrplorer/icv2:latest`
 
+`docker run --rm -it gcr.io/metaxrplorer/icv2:latest`
+
 Manually Extract rippled exe
 
 ```

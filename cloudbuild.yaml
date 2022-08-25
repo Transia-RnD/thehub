@@ -9,19 +9,6 @@ steps:
       - '-c'
       - |
         docker pull gcr.io/$PROJECT_ID/$_NAME:latest || exit 0
-  # Access the id_github file from Secret Manager, and setup SSH
-  - name: 'gcr.io/cloud-builders/git'
-    secretEnv: ['SSH_KEY']
-    entrypoint: 'bash'
-    args:
-    - -c
-    - |
-      echo "$$SSH_KEY" >> /root/.ssh/id_rsa
-      chmod 400 /root/.ssh/id_rsa
-      cp known_hosts.github /root/.ssh/known_hosts
-    volumes:
-    - name: 'ssh'
-      path: /root/.ssh
   # Build & Tag the image
   - name: 'gcr.io/cloud-builders/docker'
     args: [
@@ -36,12 +23,9 @@ steps:
       '--build-arg', 'BOOST_ROOT=/io/boost_1_75_0',
       '--build-arg', 'Boost_LIBRARY_DIRS=/io/boost_1_75_0/libs',
       '--build-arg', 'BOOST_INCLUDEDIR=/io/boost_1_75_0/boost'
-      # '--build-arg', 'GITHUB_TOKEN=$_GITHUB_TOKEN',
+      '--build-arg', 'GITHUB_TOKEN=$_GITHUB_TOKEN',
     ]
     dir: 'builder'
-    volumes:
-    - name: 'ssh'
-      path: /root/.ssh
   # Push the image
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'gcr.io/$PROJECT_ID/$_NAME:$COMMIT_SHA']
@@ -59,8 +43,4 @@ options:
   logging: CLOUD_LOGGING_ONLY
   pool:
     name: 'projects/$PROJECT_ID/locations/us-central1/workerPools/rippled'
-availableSecrets:
-  secretManager:
-  - versionName: projects/$PROJECT_ID/secrets/release-key/versions/latest
-    env: 'SSH_KEY'
 timeout: 6600s
