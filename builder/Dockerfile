@@ -37,6 +37,8 @@ ARG NAME
 ENV NAME $NAME
 ARG VERSION
 ENV VERSION $VERSION
+ARG GH_TOKEN
+ENV GH_TOKEN $GH_TOKEN
 
 COPY . .
 COPY --from=builder /app/build/rippled /app/rippled
