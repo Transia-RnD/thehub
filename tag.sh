@@ -18,4 +18,4 @@
   echo "local tag: $1-$2 doesn't exist"
 }
 
-git tag icv2-latest && git push origin --tags
+git tag -a icv2-latest -m icv2-latest && git push origin --tags
