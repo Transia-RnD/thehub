@@ -16,6 +16,8 @@ This container is running on `ubuntu:kinetic`.
 
 If you downloaded / cloned the [Github repo](https://github.com/WietseWind/docker-rippled) you got yourself a few scripts to get started. In the `./go` folder, the following scripts are available, run:
 
+> `go/build [username] [name] [version | latest] [production | genesis]`
+
 - `go/build transia icv2 production` to build the production container image (tag: `rippled`)
 - `go/build transia icv2 genesis` to build the genesis container image (tag: `rippled`)
 - `go/up transia icv2` to create a new container named `rippled` and setup the port and persistent config (*1)
@@ -83,7 +85,8 @@ You can now connect to the `rippled` websocket using a client like [ripple-lib](
 
 # Updating
 
-- **????-??-??** [branch] [version] [is released](https://github.com/Transia-RnD/thehub/tree/main/amendments/[branch])
+- **????-??-??** [version] [is released]()
+- **2022-08-25** latest [is released](https://github.com/Transia-RnD/thehub/tree/main/amendments/icv2)
 
 ## Update process
 

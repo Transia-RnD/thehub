@@ -1,4 +1,5 @@
 #!/bin/bash
+# ./release.sh transia icv2 latest amendments/icv2
 
 echo "Docker Username: $1"
 echo "Branch: $2"
@@ -12,6 +13,6 @@ mkdir $4/releases/$3/ && docker cp $2:/app/rippled $4/releases/$3/rippled && doc
 # Zip the rippled exe
 zip -r $4/releases/$3/$3.zip $4/releases/$3/rippled && \
 # Tag and release to gihub
-git tag $3 -m $3 && git push --follow-tags
+git tag $2:$3 -m $3 && git push --follow-tags && \
 # export GITHUB_TOKEN=$5 # For local dev testing
-gh release create $3 --generate-notes && gh release upload $3 $4/releases/$3/$3.zip
+gh release create $3 --generate-notes && gh release upload $2:$3 $4/releases/$3/$3.zip
