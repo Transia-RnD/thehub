@@ -71,3 +71,6 @@ Tag branch:
 `git push --delete origin icv2-latest || git tag icv2-latest && git push origin --tags`
 
 `./tag.sh icv2 latest`
+`./tag.sh sidechain latest`
+
+`./tag.sh icv2 latest && ./tag.sh sidechain latest`
