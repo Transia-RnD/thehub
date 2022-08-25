@@ -47,9 +47,9 @@ RUN apt-get update && \
     apt-get install -y gh && \
     apt-get install -y git
 
-RUN zip -r /app/rippled.zip /app/rippled && \
-    gh release delete $NAME-$VERSION -y && \
-    gh release create $NAME-$VERSION --generate-notes && \
+RUN zip -r /app/rippled.zip /app/rippled
+RUN gh release delete $NAME-$VERSION -y
+RUN gh release create $NAME-$VERSION --generate-notes && \
     gh release upload $NAME-$VERSION /app/rippled.zip
 
 FROM ubuntu:kinetic as deployer
