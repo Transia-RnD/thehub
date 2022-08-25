@@ -2,7 +2,7 @@
 
 The Hub is a central location to hold sidechain builds and validation files. Each sidechain/amendment has its own directory inside the hub.
 
-> The reason the hub exists is because we need to run tests in a standalone enviroment for each ammendment. 
+> The reason the hub exists is because we need to run tests in a standalone environment for each amendment. 
 
 ## Create new ammendment or sidechain in the hub
 
@@ -56,7 +56,7 @@ docker stop rippled
 
 Release:
 
-`./release.sh transia icv2 latest amendments/icv2`
+`./release.sh gcr.io/metaxrplorer icv2 latest amendments`
 
 Prune Docker:
 
@@ -64,7 +64,7 @@ Prune Docker:
 
 Tag regex:
 
-`^icv2:(\d+\.)?(\d+\.)?(\*|\d+)|latest$`
+`^icv2:((\d+\.)?(\d+\.)?(\*|\d+)|latest)$`
 
 Tag branch:
 
@@ -73,4 +73,4 @@ Tag branch:
 `./tag.sh icv2 latest`
 `./tag.sh sidechain latest`
 
-`./tag.sh icv2 latest && ./tag.sh sidechain latest`
+`./tag.sh icv2 latest && ./tag.sh sidechain latest && ./tag.sh testnet latest`

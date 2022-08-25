@@ -1,4 +1,4 @@
-FROM gcr.io/metaxrplorer/sidechain:latest as base
+FROM gcr.io/metaxrplorer/sidechain:base as base
 
 # RIPPLED (BUILD) IS IN /app/rippled
 WORKDIR /app

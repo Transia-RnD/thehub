@@ -1,4 +1,4 @@
-FROM gcr.io/metaxrplorer/icv2:latest as base
+FROM gcr.io/metaxrplorer/icv2:base as base
 
 # RIPPLED (BUILD) IS IN /app/rippled
 WORKDIR /app

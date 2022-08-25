@@ -1,5 +1,5 @@
 #!/bin/bash
-# ./release.sh gcr.io/metaxrplorer icv2 latest
+# ./release.sh gcr.io/metaxrplorer icv2 latest, amendments
 
 echo "Docker Username: $1"
 echo "Name: $2"
@@ -7,6 +7,7 @@ echo "Version: $3"
 echo "Image: $1/$2:$3"
 echo "Container Name: $2-$3"
 echo "Tag Name: $2-$3"
+echo "Directory Name: $4"
 
 # Stop, remove and run the build
 { # try
@@ -18,28 +19,41 @@ echo "Tag Name: $2-$3"
   echo "Docker not running"
 }
 
-# Release the version
+# Build the release
 { # try
+  mkdir rippled-$2-$3 && \
   docker run -d -it --name $2-$3 $1/$2:$3 && \
   # make the release dir, copy the rippled exe from the docker and stop
-  docker cp $2-$3:/app/rippled rippled && docker stop $2-$3 && \
+  docker cp $2-$3:/app/rippled rippled-$2-$3/rippled && docker stop $2-$3 && \
+  cp $4/$2/config/rippled.cfg rippled-$2-$3/rippled.cfg && \
+  cp $4/$2/config/validators.txt rippled-$2-$3/validators.txt && \
   # Zip the rippled exe
-  zip -r rippled.zip rippled && \
+  zip -r rippled-$2-$3.zip rippled-$2-$3
   echo "Zipped rippled"
 } || { # catch
   echo "Docker dne"
   exit 1
 }
 
+echo "README: https://github.com/Transia-RnD/thehub/tree/$2-latest/$4/$2" > release.info && \
+echo "" >> release.info && \
 echo "Build host: `hostname`" > release.info && \
 echo "Build date: `date`" >> release.info && \
 # echo "Build md5: `md5sum rippled`" >> release.info && \
 echo "Image - ubuntu+rippled: $1/$2:base" >> release.info && \
 echo "Image - rippled+config: $1/$2:$3" >> release.info && \
 echo "" >> release.info && \
-echo "Run with: " >> release.info && \
+echo "Zip includes: " >> release.info && \
+echo "- rippled" >> release.info && \
+echo "- rippled.cfg: https://github.com/Transia-RnD/thehub/blob/main/$4/$2/config/rippled.cfg" >> release.info && \
+echo "- validators.txt: https://github.com/Transia-RnD/thehub/blob/main/$4/$2/config/validators.txt" >> release.info && \
+echo "" >> release.info
+echo "Use with docker: " >> release.info && \
 echo "docker run -dit --name rippled -p 80:80 $1/$2:$3" >> release.info && \
 echo "" >> release.info
+# echo "Deployed: https://$2.transia.co" >> release.info && \
+# echo "Explorer: https://$2.transia.co/explorer" >> release.info && \
+# echo "" >> release.info
 
 # Release the version
 { # try
@@ -51,4 +65,4 @@ echo "" >> release.info
   echo "Release dne"
   gh release create $2-$3 --notes-file release.info
 }
-gh release upload $2-$3 rippled.zip
+gh release upload $2-$3 rippled-$2-$3.zip
