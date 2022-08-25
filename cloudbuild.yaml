@@ -2,7 +2,7 @@
 # NOTE: This is triggered for each sidechain.
 steps:
   # BUILD RIPPLED
-  Pull the latest image
+  # Pull the latest image
   - name: 'gcr.io/cloud-builders/docker'
     entrypoint: 'bash'
     args:
