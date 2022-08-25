@@ -10,7 +10,7 @@ The Hub is a central location to hold sidechain builds and validation files. Eac
 2. Copy the template directory in `template` and paste the dir into either amendments or sidechains.
 3. Rename the directory to match the rippled branch name EXACTLY. ie. `hooks` -> `hooks`.
 4. Configure your `rippled.cfg` file to include the amendment.
-5. Create a pull request. Include the rippled branch and repository if different than XRPLF/rippled.
+5. Create a pull request. Include the version, rippled branch and repository if different than XRPLF/rippled.
 
 > Someone will review and once approved it is added to the build process.
 
@@ -59,3 +59,11 @@ Release:
 Prune Docker:
 
 `docker builder prune`
+
+Tag regex:
+
+`^icv2:(\d+\.)?(\d+\.)?(\*|\d+)|latest$`
+
+Tag branch:
+
+`git push --delete origin icv2-latest && git tag icv2-latest -m 0.0.1 && git push`

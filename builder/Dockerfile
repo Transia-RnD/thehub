@@ -31,7 +31,32 @@ RUN cd build && cmake --build . -j17 && strip -s rippled
 
 ENTRYPOINT /bin/bash
 
-FROM ubuntu:kinetic as polisher
+FROM ubuntu:kinetic as releaser
+
+WORKDIR /app
+
+COPY . .
+COPY --from=builder /app/build/rippled /app/rippled
+
+ARG NAME
+ENV NAME $NAME
+ARG VERSION
+ENV VERSION $VERSION
+# ARG GITHUB_TOKEN
+# ENV GITHUB_TOKEN $GITHUB_TOKEN
+
+RUN apt-get update && \
+    apt-get upgrade -y && \
+    apt-get install -y zip && \
+    apt-get install -y gh && \
+    apt-get install -y git
+
+RUN zip -r /app/rippled.zip /app/rippled && \
+    gh release delete $NAME-$VERSION -y && \
+    gh release create $NAME-$VERSION --generate-notes && \
+    gh release upload $NAME-$VERSION /app/rippled.zip
+
+FROM ubuntu:kinetic as deployer
 
 WORKDIR /app
 
