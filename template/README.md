@@ -81,6 +81,10 @@ If you started the container manually, you may have to change the name of the co
 
 You can now connect to the `rippled` websocket using a client like [ripple-lib](https://github.com/ripple/ripple-lib/tree/master).
 
+# Updating
+
+- **????-??-??** [branch] [version] [is released](https://github.com/Transia-RnD/thehub/tree/main/amendments/[branch])
+
 ## Update process
 
 1. Stop the container: `docker stop rippled` (if you named (`--name`) the container `rippled`)
@@ -99,50 +103,3 @@ docker push transia/icv2:$version
 docker tag transia/icv2:$version transia/icv2:latest
 docker push transia/icv2:latest
 ```
-
-## Setup SSL
-
-Create dhparam
-
-`sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/server.key -out /etc/ssl/certs/server.crt`
-
-Create dhparam
-
-`sudo openssl dhparam -out /etc/nginx/ssl/dhparam.pem 2048`
-
-## Setup Nginx
-
-Install Nginx
-
-`sudo apt-get install nginx`
-
-Create sites available
-
-`sudo nano /etc/nginx/sites-available/caslnpo.org`
-
-Paste `nginx.conf` contents
-
-Link sites available to sites enabled
-
-`sudo ln -s /etc/nginx/sites-available/caslnpo.org /etc/nginx/sites-enabled`
-
-Test & Restart
-
-`sudo nginx -t && sudo systemctl restart nginx`
-
-Enable Firewall && Add 80
-
-`sudo ufw enable && sudo ufw allow 443`
-
-Build Docker
-
-`docker build --tag rippled:latest .`
-
-Run Docker
-
-`docker run -dit --name rippled -p 8080:80 -v /mnt/xrpld-config/:/config/ rippled:latest`
-
-Resources:
-
-Example Config: https://github.com/ripple/rippled/blob/develop/cfg/rippled-example.cfg
-Node Config Generator: https://xrplf.github.io/xrpl-node-configurator/#/

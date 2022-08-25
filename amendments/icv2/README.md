@@ -156,5 +156,3 @@ Resources:
 
 Example Config: https://github.com/ripple/rippled/blob/develop/cfg/rippled-example.cfg
 Node Config Generator: https://xrplf.github.io/xrpl-node-configurator/#/
-
-`./release.sh transia icv2 latest`

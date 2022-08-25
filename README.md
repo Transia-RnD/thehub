@@ -6,8 +6,8 @@ The Hub is a central location to hold sidechain builds and validation files. Eac
 
 ## Create new ammendment or sidechain in the hub
 
-1. Clone this repository
-2. Copy the template directory in `template`.
+1. Fork this repository
+2. Copy the template directory in `template` and paste the dir into either amendments or sidechains.
 3. Rename the directory to match the rippled branch name EXACTLY. ie. `hooks` -> `hooks`.
 4. Configure your `rippled.cfg` file to include the amendment.
 5. Create a pull request. Include the rippled branch and repository if different than XRPLF/rippled.
@@ -42,8 +42,20 @@ Enter into docker builder for testing.
 
 `docker run --rm -it transia/builder:1.75.0`
 
-Build amendment:
+`docker run -d -it --name icv2 gcr.io/metaxrplorer/icv2:latest`
 
-`docker build --platform=linux/amd64 --tag transia/icv2:latest . -f Dockerfile`
+Manually Extract rippled exe
+
+```
+docker run -d -it --name rippled xrpllabsofficial/xrpld:latest && \
+docker cp rippled:/app/rippled ~/projects/transia-rnd/thehub/amendments/releases/testnet-rippled && \
+docker stop rippled
+```
+
+Release:
+
+`./release.sh transia icv2 latest amendments/icv2`
+
+Prune Docker:
 
 `docker builder prune`
