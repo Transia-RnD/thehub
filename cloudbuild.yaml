@@ -41,7 +41,7 @@ steps:
       '-f', 'Dockerfile',
       '.'
     ]
-    dir: '_DIR/$_NAME'
+    dir: '$_DIR/$_NAME'
   # Push the image
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'gcr.io/$PROJECT_ID/$_NAME:$_VERSION']
