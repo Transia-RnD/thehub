@@ -42,16 +42,16 @@ RUN apt-get update && \
     apt-get install -y git && \
     apt-get install -y nodejs
 
-COPY --from=builder /app/build /app/build
+COPY --from=builder /app /app
 
 RUN git clone https://github.com/RichardAH/xrpl-codec-gen.git
-RUN cd xrpl-codec-gen && node gen.js /app/build > definitions.json
+RUN cd xrpl-codec-gen && node gen.js /app > definitions.json
 
 FROM ubuntu:kinetic as deployer
 
 WORKDIR /app
 
-COPY --from=definitions /app/build/definitions.json /app/definitions.json
+COPY --from=definitions /app/definitions.json /app/definitions.json
 COPY --from=builder /app/build/rippled /app/rippled
 
 ENTRYPOINT /bin/bash
