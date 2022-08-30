@@ -1,4 +1,4 @@
-FROM ubuntu:bionic as cloner
+FROM ubuntu:kinetic as cloner
 WORKDIR /app
 
 ARG REPO
@@ -29,7 +29,7 @@ RUN cd build && cmake --build . -j17 && strip -s rippled
 
 ENTRYPOINT /bin/bash
 
-FROM ubuntu:bionic as definitions
+FROM ubuntu:kinetic as definitions
 WORKDIR /app
 
 ARG REPO
@@ -39,7 +39,8 @@ ENV BRANCH $BRANCH
 
 RUN apt-get update && \
     apt-get upgrade -y && \
-    apt-get install -y git
+    apt-get install -y git && \
+    apt-get install -y nodejs
 
 COPY --from=builder /app/build /app/build
 
