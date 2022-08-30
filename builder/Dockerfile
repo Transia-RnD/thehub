@@ -32,20 +32,15 @@ ENTRYPOINT /bin/bash
 FROM ubuntu:kinetic as definitions
 WORKDIR /app
 
-ARG REPO
-ENV REPO $REPO
-ARG BRANCH
-ENV BRANCH $BRANCH
-
 RUN apt-get update && \
     apt-get upgrade -y && \
     apt-get install -y git && \
     apt-get install -y nodejs
 
-COPY --from=builder /app /app
+COPY --from=cloner /app/rippled /app
 
 RUN git clone https://github.com/RichardAH/xrpl-codec-gen.git
-RUN cd xrpl-codec-gen && node gen.js /app > definitions.json
+RUN cd xrpl-codec-gen && node gen.js /app/src/ripple > /app/definitions.json
 
 FROM ubuntu:kinetic as deployer
 
