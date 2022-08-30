@@ -21,10 +21,14 @@ echo "Directory Name: $4"
 
 # Build the release
 { # try
-  mkdir rippled-$2-$3 && \
+  if ! mkdir rippled-$2-$3; then
+      echo "mkdir rippled-$2-$3 returned an error"
+  fi
   docker run -d -it --name $2-$3 $1/$2:$3 && \
   # make the release dir, copy the rippled exe from the docker and stop
-  docker cp $2-$3:/app/rippled rippled-$2-$3/rippled && docker stop $2-$3 && \
+  docker cp $2-$3:/app/rippled rippled-$2-$3/rippled && \
+  docker cp $2-$3:/app/definitions.json definitions.json && \
+  docker stop $2-$3 && \
   cp $4/$2/config/rippled.cfg rippled-$2-$3/rippled.cfg && \
   cp $4/$2/config/validators.txt rippled-$2-$3/validators.txt && \
   # Zip the rippled exe
@@ -65,4 +69,5 @@ echo "" >> release.info
   echo "Release dne"
   gh release create $2-$3 --notes-file release.info
 }
-gh release upload $2-$3 rippled-$2-$3.zip
+gh release upload $2-$3 rippled-$2-$3.zip && \
+gh release upload $2-$3 definitions.json

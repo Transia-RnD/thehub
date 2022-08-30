@@ -56,7 +56,7 @@ docker stop rippled
 
 Release:
 
-`./release.sh gcr.io/metaxrplorer icv2 latest amendments`
+`./release.sh gcr.io/metaxrplorer testnet latest amendments`
 
 Prune Docker:
 
