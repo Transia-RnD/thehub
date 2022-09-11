@@ -34,8 +34,8 @@ RUN git clone https://github.com/seelabs/xbridge_witness
 
 FROM transia/builder:1.75.0 as witnessbuilder
 WORKDIR /app
-COPY --from=witnesscloner /app/xbridge_witness /witness
-COPY --from=rippledbuilder /app/rippled /rippled
+COPY --from=witnesscloner /app/xbridge_witness /app
+COPY --from=rippledbuilder /app /rippled
 
 ARG BOOST_ROOT
 ENV BOOST_ROOT $BOOST_ROOT
@@ -44,7 +44,7 @@ ENV Boost_LIBRARY_DIRS $Boost_LIBRARY_DIRS
 ARG BOOST_INCLUDEDIR
 ENV BOOST_INCLUDEDIR $BOOST_INCLUDEDIR
 
-RUN mkdir -p build && cd build && cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=/rippled/build .. && cmake --build . -j17
+RUN mkdir -p build/gcc.release && cd build/gcc.release && cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=/path/to/rippled/installation/root -S ../.. && cmake --build .
 
 ENTRYPOINT /bin/bash
 

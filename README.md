@@ -38,6 +38,8 @@ release: will build a release version of rippled for production
 
 Misc Commands:
 
+`docker build --tag transia/xrpld-witness:latest -f builder/witness.dockerfile .`
+
 Enter into docker builder for testing.
 
 `docker run --rm -it transia/builder:1.75.0`
