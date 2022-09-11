@@ -18,7 +18,7 @@ ENV Boost_LIBRARY_DIRS $Boost_LIBRARY_DIRS
 ARG BOOST_INCLUDEDIR
 ENV BOOST_INCLUDEDIR $BOOST_INCLUDEDIR
 
-RUN mkdir build && cd build && cmake -DCMAKE_BUILD_TYPE=Release ../.. && cmake --build . -j17
+RUN mkdir -p build/gcc.release && cd build/gcc.release && cmake -DCMAKE_BUILD_TYPE=Release ../.. && cmake --build . -j17
 
 ENTRYPOINT /bin/bash
 
@@ -26,6 +26,6 @@ FROM ubuntu:kinetic as deployer
 
 WORKDIR /app
 
-COPY --from=builder /app/build/attn_server /app/attn_server
+COPY --from=builder /app/build/gcc.release/attn_server /app/attn_server
 
 ENTRYPOINT /bin/bash
