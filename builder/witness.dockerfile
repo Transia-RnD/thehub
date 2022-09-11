@@ -11,7 +11,7 @@ FROM ubuntu:kinetic as builder
 WORKDIR /app
 COPY --from=cloner /app/xbridge_witness /witness
 
-RUN mkdir build/gcc.release && cd build/gcc.release && cmake -DCMAKE_BUILD_TYPE=Release ../.. && cmake --build . -j17
+RUN mkdir build && cd build && cmake -DCMAKE_BUILD_TYPE=Release ../.. && cmake --build . -j17
 
 ENTRYPOINT /bin/bash
 
@@ -19,6 +19,6 @@ FROM ubuntu:kinetic as deployer
 
 WORKDIR /app
 
-COPY --from=builder /app/build/xbridge_witness/attn_server /app/attn_server
+COPY --from=builder /app/build/attn_server /app/attn_server
 
 ENTRYPOINT /bin/bash
