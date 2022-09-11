@@ -7,9 +7,16 @@ RUN apt-get update && \
 
 RUN git clone https://github.com/seelabs/xbridge_witness
 
-FROM ubuntu:kinetic as builder
+FROM transia/builder:1.75.0 as builder
 WORKDIR /app
 COPY --from=cloner /app/xbridge_witness /witness
+
+ARG BOOST_ROOT
+ENV BOOST_ROOT $BOOST_ROOT
+ARG Boost_LIBRARY_DIRS
+ENV Boost_LIBRARY_DIRS $Boost_LIBRARY_DIRS
+ARG BOOST_INCLUDEDIR
+ENV BOOST_INCLUDEDIR $BOOST_INCLUDEDIR
 
 RUN mkdir build && cd build && cmake -DCMAKE_BUILD_TYPE=Release ../.. && cmake --build . -j17
 
