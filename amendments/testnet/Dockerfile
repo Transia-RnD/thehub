@@ -18,9 +18,9 @@ EXPOSE 80 443 5005 6006 51235
 
 RUN export DOCKER_BUILDKIT=1
 
-# FROM base AS production
-# RUN echo "BUILDING PRODUCTION RIPPLED"
-# ENTRYPOINT [ "/entrypoint.sh" ]
+FROM base AS production
+RUN echo "BUILDING PRODUCTION RIPPLED"
+ENTRYPOINT [ "/entrypoint.sh" ]
 
 FROM base AS genesis
 RUN echo "BUILDING GENESIS RIPPLED"
