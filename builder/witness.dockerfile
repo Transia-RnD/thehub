@@ -1,57 +1,35 @@
-FROM ubuntu:kinetic as rippledcloner
+FROM ubuntu:kinetic as builder
 WORKDIR /app
 
 RUN apt-get update && \
     apt-get upgrade -y && \
-    apt-get install -y git
+    apt-get install -y build-essential && \
+    apt-get install -y git && \
+    apt-get install -y ninja-build && \
+    apt-get install -y cmake && \
+    apt-get install -y gcc && \
+    apt-get install -y g++ && \
+    apt-get install -y software-properties-common && \
+    add-apt-repository ppa:deadsnakes/ppa && \
+    apt-get install -y python3.11 && \
+    apt-get install -y python3-pip && \
+    apt-get install -y wget
 
-RUN git clone https://github.com/XRPLF/rippled.git
+RUN git clone https://github.com/seelabs/xbridge_witness witness
 
-FROM transia/builder:1.75.0 as rippledbuilder
-WORKDIR /app
-COPY --from=rippledcloner /app/rippled /app
+RUN pip install conan
 
-ARG BOOST_ROOT
-ENV BOOST_ROOT $BOOST_ROOT
-ARG Boost_LIBRARY_DIRS
-ENV Boost_LIBRARY_DIRS $Boost_LIBRARY_DIRS
-ARG BOOST_INCLUDEDIR
-ENV BOOST_INCLUDEDIR $BOOST_INCLUDEDIR
+RUN wget https://github.com/Kitware/CMake/releases/download/v3.23.1/cmake-3.23.1-Linux-x86_64.sh && \
+    sh cmake-3.23.1-Linux-x86_64.sh --prefix=/usr/local --exclude-subdir
 
-RUN mkdir build && cd build && cmake .. -Wno-dev
-RUN cd build && cmake --build . -j17
+RUN wget https://boostorg.jfrog.io/artifactory/main/release/1.75.0/source/boost_1_79_0.tar.gz && \
+    tar -xvzf boost_1_79_0.tar.gz && \
+    cd boost_1_79_0 && ./bootstrap.sh && ./b2 -j 8
 
-ENTRYPOINT /bin/bash
+RUN mkdir -p /app/witness/build/gcc.release
 
-FROM ubuntu:kinetic as witnesscloner
-WORKDIR /app
+WORKDIR /app/witness/build/gcc.release
 
-RUN apt-get update && \
-    apt-get upgrade -y && \
-    apt-get install -y git
-
-RUN git clone https://github.com/seelabs/xbridge_witness
-
-FROM transia/builder:1.75.0 as witnessbuilder
-WORKDIR /app
-COPY --from=witnesscloner /app/xbridge_witness /app
-COPY --from=rippledbuilder /app /rippled
-
-ARG BOOST_ROOT
-ENV BOOST_ROOT $BOOST_ROOT
-ARG Boost_LIBRARY_DIRS
-ENV Boost_LIBRARY_DIRS $Boost_LIBRARY_DIRS
-ARG BOOST_INCLUDEDIR
-ENV BOOST_INCLUDEDIR $BOOST_INCLUDEDIR
-
-RUN mkdir -p build/gcc.release && cd build/gcc.release && cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=/path/to/rippled/installation/root -S ../.. && cmake --build .
-
-ENTRYPOINT /bin/bash
-
-FROM ubuntu:kinetic as deployer
-
-WORKDIR /app
-
-COPY --from=witnessbuilder /app/build/gcc.release/attn_server /app/attn_server
-
-ENTRYPOINT /bin/bash
+RUN CC=$(which gcc) CXX=$(which g++) conan install -b missing --settings build_type=Debug ../..
+RUN cmake -DCMAKE_BUILD_TYPE=Debug -GNinja -Dunity=Off /app/witness
+RUN ninja
