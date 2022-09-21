@@ -4,13 +4,25 @@ services:
     build:
       context: ./xchains/comms
       dockerfile: Dockerfile
-    container_name: rippled-witness1
+    container_name: xrpld-witness
     ports:
       - "80:80"
       - "443:443"
+      - "5005:5005"
+      - "6006:6006"
+      - "51235:51235"
     volumes:
       # - ./xchains/comms/config:/app/config
       - ./rippled-xchain-latest/rippled:/app/rippled
       - ./witness-latest/witness:/app/witness
     command: >
       poerty shell ./scripts/tutorial.sh
+  explorer:
+    build:
+      context: ./builder
+      dockerfile: explorer.dockerfile
+    container_name: xrpld-explorer
+    environment:
+      - VUE_APP_WSS_ENDPOINT=comms.transia.co
+    ports:
+      - "3000:3000"

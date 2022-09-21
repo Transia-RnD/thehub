@@ -30,7 +30,8 @@ RUN apt-get update && \
     apt-get install -y python3.11 && \
     apt-get install -y python3-pip && \
     apt-get install -y wget && \
-    apt-get install -y libssl-dev
+    apt-get install -y libssl-dev && \
+    apt-get install -y pkg-config
 
 RUN wget https://boostorg.jfrog.io/artifactory/main/release/1.79.0/source/boost_1_79_0.tar.gz && \
     tar -xvzf boost_1_79_0.tar.gz && \
