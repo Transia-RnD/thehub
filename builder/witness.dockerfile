@@ -24,12 +24,11 @@ RUN wget https://github.com/Kitware/CMake/releases/download/v3.23.1/cmake-3.23.1
 
 RUN wget https://boostorg.jfrog.io/artifactory/main/release/1.75.0/source/boost_1_79_0.tar.gz && \
     tar -xvzf boost_1_79_0.tar.gz && \
-    cd boost_1_79_0 && ./bootstrap.sh && ./b2 -j 8
+    cd boost_1_79_0 && ./bootstrap.sh && ./b2 -j17
 
-RUN mkdir -p /app/witness/build/gcc.release
+RUN mkdir -p /app/witness/build
 
-WORKDIR /app/witness/build/gcc.release
+WORKDIR /app/witness/build
 
-RUN CC=$(which gcc) CXX=$(which g++) conan install -b missing --settings build_type=Debug ../..
-RUN cmake -DCMAKE_BUILD_TYPE=Debug -GNinja -Dunity=Off /app/witness
-RUN ninja
+RUN conan install -b missing --settings build_type=Debug .. && \
+    cmake .. && make -j17
