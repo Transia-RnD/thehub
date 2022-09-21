@@ -32,4 +32,5 @@ WORKDIR sidechain-cli
 RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
 RUN poetry install
 
-CMD [ "poetry", "shell", "./scripts/tutorial.sh" ]
+# CMD [ "poetry", "shell", "./scripts/tutorial.sh" ]
+ENTRYPOINT /bin/bash
