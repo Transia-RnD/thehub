@@ -29,9 +29,12 @@ RUN apt-get update && \
     add-apt-repository ppa:deadsnakes/ppa && \
     apt-get install -y python3.11 && \
     apt-get install -y python3-pip && \
-    apt-get install -y wget && \
+    apt-get install -y pkg-config && \
+    apt-get install -y protobuf-compiler && \
+    apt-get install -y libprotobuf-dev && \
     apt-get install -y libssl-dev && \
-    apt-get install -y pkg-config
+    apt-get install -y wget && \
+    apt-get install -y doxygen
 
 RUN wget https://boostorg.jfrog.io/artifactory/main/release/1.79.0/source/boost_1_79_0.tar.gz && \
     tar -xvzf boost_1_79_0.tar.gz && \
