@@ -1,6 +1,13 @@
 FROM ubuntu:kinetic as builder
 WORKDIR /app
 
+ARG BOOST_ROOT
+ENV BOOST_ROOT $BOOST_ROOT
+ARG Boost_LIBRARY_DIRS
+ENV Boost_LIBRARY_DIRS $Boost_LIBRARY_DIRS
+ARG BOOST_INCLUDEDIR
+ENV BOOST_INCLUDEDIR $BOOST_INCLUDEDIR
+
 RUN apt-get update && \
     apt-get upgrade -y && \
     apt-get install -y build-essential && \
