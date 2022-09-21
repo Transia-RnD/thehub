@@ -1,5 +1,15 @@
+FROM ubuntu:kinetic as cloner
+WORKDIR /app
+
+RUN apt-get update && \
+    apt-get upgrade -y && \
+    apt-get install -y git
+
+RUN git clone https://github.com/seelabs/xbridge_witness witness
+
 FROM ubuntu:kinetic as builder
 WORKDIR /app
+COPY --from=cloner /app/witness /app
 
 ARG BOOST_ROOT
 ENV BOOST_ROOT $BOOST_ROOT
@@ -22,17 +32,22 @@ RUN apt-get update && \
     apt-get install -y wget && \
     apt-get install -y cmake
 
-RUN git clone https://github.com/seelabs/xbridge_witness witness
-
 RUN wget https://boostorg.jfrog.io/artifactory/main/release/1.79.0/source/boost_1_79_0.tar.gz && \
     tar -xvzf boost_1_79_0.tar.gz && \
     cd boost_1_79_0 && ./bootstrap.sh && ./b2 -j17
 
 RUN pip install conan
 
-RUN mkdir -p /app/witness/build
+RUN mkdir build && \
+    cd build && \
+    conan install -b missing --settings build_type=Debug .. && \
+    cmake .. && \
+    make -j17
 
-WORKDIR /app/witness/build
+FROM ubuntu:kinetic as deployer
 
-RUN conan install -b missing --settings build_type=Debug .. && \
-    cmake .. && make -j17
+WORKDIR /app
+
+COPY --from=builder /app/build/witness /app/witness
+
+ENTRYPOINT /bin/bash
