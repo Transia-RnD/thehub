@@ -19,7 +19,7 @@ RUN apt-get update && \
     add-apt-repository ppa:deadsnakes/ppa && \
     apt-get install -y python3.11 && \
     apt-get install -y python3-pip && \
-    apt-get install -y wget
+    apt-get install -y wget && \
     apt-get install -y cmake
 
 RUN git clone https://github.com/seelabs/xbridge_witness witness
