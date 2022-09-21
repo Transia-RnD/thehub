@@ -56,25 +56,26 @@ docker cp rippled:/app/rippled ~/projects/transia-rnd/thehub/amendments/releases
 docker stop rippled
 ```
 
+Tag:
+
+[branch] [version]
+
+`./tag.sh icv2 latest`
+
 Release:
 
 [docker] [branch] [version] [directory]
 
-`./release.sh gcr.io/metaxrplorer xls20 latest amendments`
+`./release.sh gcr.io/metaxrplorer xchain latest amendments`
 
 Prune Docker:
 
 `docker builder prune`
 
-Tag regex:
+Tag regex (Cloud Build):
 
 `^icv2:((\d+\.)?(\d+\.)?(\*|\d+)|latest)$`
 
-Tag branch:
+Tag other:
 
 `git push --delete origin icv2-latest || git tag icv2-latest && git push origin --tags`
-
-`./tag.sh icv2 latest`
-`./tag.sh xchain latest`
-
-`./tag.sh icv2 latest && ./tag.sh xchain latest && ./tag.sh testnet latest`

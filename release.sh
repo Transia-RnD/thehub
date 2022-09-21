@@ -31,13 +31,22 @@ echo "Directory Name: $4"
   docker stop $2-$3 && \
   cp $4/$2/config/rippled.cfg rippled-$2-$3/rippled.cfg && \
   cp $4/$2/config/validators.txt rippled-$2-$3/validators.txt && \
-  # Zip the rippled exe
-  zip -r rippled-$2-$3.zip rippled-$2-$3
-  echo "Zipped rippled"
 } || { # catch
   echo "Docker dne"
   exit 1
 }
+
+if [[ "$2" == *"xchain"* ]]; then
+    echo "Attach witness to zip" && \
+    docker run -d -it --name gcr.io/metaxrplorer/xrpld-witness:latest && \
+    # make the release dir, copy the rippled exe from the docker and stop
+    docker cp gcr.io/metaxrplorer/xrpld-witness:/app/witness/attn_server rippled-$2-$3/witness && \
+    docker stop $2-$3 && \
+fi
+
+# Zip the rippled exe
+  zip -r rippled-$2-$3.zip rippled-$2-$3
+  echo "Zipped rippled"
 
 echo "README: https://github.com/Transia-RnD/thehub/tree/$2-latest/$4/$2" > release.info && \
 echo "" >> release.info && \
