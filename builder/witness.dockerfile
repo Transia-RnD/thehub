@@ -22,8 +22,6 @@ ENV BOOST_INCLUDEDIR $BOOST_INCLUDEDIR
 RUN apt-get update && \
     apt-get upgrade -y && \
     apt-get install -y build-essential && \
-    apt-get install -y gcc && \
-    apt-get install -y g++ && \
     apt-get install -y software-properties-common && \
     add-apt-repository ppa:deadsnakes/ppa && \
     apt-get install -y python3.11 && \
@@ -33,7 +31,7 @@ RUN pip install conan
 
 RUN mkdir build && \
     cd build && \
-    conan install .. && \
+    conan install -b missing .. && \
     cmake .. && \
     make -j8
 
