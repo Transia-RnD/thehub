@@ -34,7 +34,8 @@ RUN apt-get update && \
     apt-get install -y libprotobuf-dev && \
     apt-get install -y libssl-dev && \
     apt-get install -y wget && \
-    apt-get install -y doxygen
+    apt-get install -y doxygen && \
+    apt-get install -y graphviz
 
 RUN wget https://boostorg.jfrog.io/artifactory/main/release/1.79.0/source/boost_1_79_0.tar.gz && \
     tar -xvzf boost_1_79_0.tar.gz && \
