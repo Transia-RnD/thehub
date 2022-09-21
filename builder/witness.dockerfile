@@ -21,7 +21,6 @@ ENV BOOST_INCLUDEDIR $BOOST_INCLUDEDIR
 RUN apt-get update && \
     apt-get upgrade -y && \
     apt-get install -y build-essential && \
-    apt-get install -y git && \
     apt-get install -y cmake && \
     apt-get install -y gcc && \
     apt-get install -y g++ && \
@@ -34,12 +33,14 @@ RUN apt-get update && \
     apt-get install -y libprotobuf-dev && \
     apt-get install -y libssl-dev && \
     apt-get install -y wget && \
-    apt-get install -y doxygen && \
-    apt-get install -y graphviz
+    apt-get install -y doxygen
+
+RUN wget https://github.com/Kitware/CMake/releases/download/v3.23.1/cmake-3.23.1-Linux-x86_64.sh && \
+    sh cmake-3.23.1-Linux-x86_64.sh --prefix=/usr/local --exclude-subdir
 
 RUN wget https://boostorg.jfrog.io/artifactory/main/release/1.79.0/source/boost_1_79_0.tar.gz && \
     tar -xvzf boost_1_79_0.tar.gz && \
-    cd boost_1_79_0 && ./bootstrap.sh && ./b2 -j17
+    cd boost_1_79_0 && ./bootstrap.sh && ./b2 -j8
 
 RUN pip install conan
 
@@ -47,7 +48,7 @@ RUN mkdir build && \
     cd build && \
     conan install -b missing --settings build_type=Debug .. && \
     cmake .. && \
-    make -j17
+    make -j8
 
 FROM ubuntu:kinetic as deployer
 
