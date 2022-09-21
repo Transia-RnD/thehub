@@ -1,0 +1,16 @@
+version: '3.4'
+services:
+  node1:
+    build:
+      context: ./nodes/node1
+      dockerfile: Dockerfile
+    container_name: geth-node1
+    ports:
+      - "80:80"
+      - "443:443"
+  # Uncomment if you need to persist the data on disk
+    volumes:
+      - ./rippled-xchain-latest/rippled:/app/rippled
+      - ./witness-latest/witness:/app/witness
+    command: >
+      poerty shell ./scripts/tutorial.sh

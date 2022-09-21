@@ -20,17 +20,15 @@ RUN apt-get update && \
     apt-get install -y python3.11 && \
     apt-get install -y python3-pip && \
     apt-get install -y wget
+    apt-get install -y cmake
 
 RUN git clone https://github.com/seelabs/xbridge_witness witness
-
-RUN pip install conan
-
-RUN wget https://github.com/Kitware/CMake/releases/download/v3.23.1/cmake-3.23.1-Linux-x86_64.sh && \
-    sh cmake-3.23.1-Linux-x86_64.sh --prefix=/usr/local --exclude-subdir
 
 RUN wget https://boostorg.jfrog.io/artifactory/main/release/1.79.0/source/boost_1_79_0.tar.gz && \
     tar -xvzf boost_1_79_0.tar.gz && \
     cd boost_1_79_0 && ./bootstrap.sh && ./b2 -j17
+
+RUN pip install conan
 
 RUN mkdir -p /app/witness/build
 
