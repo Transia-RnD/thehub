@@ -1,15 +1,15 @@
 version: '3.4'
 services:
-  node1:
+  witness:
     build:
-      context: ./nodes/node1
+      context: ./xchains/comms
       dockerfile: Dockerfile
-    container_name: geth-node1
+    container_name: rippled-witness1
     ports:
       - "80:80"
       - "443:443"
-  # Uncomment if you need to persist the data on disk
     volumes:
+      # - ./xchains/comms/config:/app/config
       - ./rippled-xchain-latest/rippled:/app/rippled
       - ./witness-latest/witness:/app/witness
     command: >
