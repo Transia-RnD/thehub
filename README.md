@@ -72,6 +72,8 @@ Prune Docker:
 
 `docker builder prune`
 
+`docker system prune`
+
 Tag regex (Cloud Build):
 
 `^icv2:((\d+\.)?(\d+\.)?(\*|\d+)|latest)$`
