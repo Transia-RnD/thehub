@@ -1,4 +1,4 @@
-# docker build --platform=linux/amd64 -t gcr.io/metaxrplorer/witness:base -f builder/witness.dockerfile . --build-arg BOOST_ROOT=/app/boost_1_79_0 --build-arg Boost_LIBRARY_DIRS=/app/boost_1_79_0/libs --build-arg BOOST_INCLUDEDIR=/app/boost_1_79_0/boost 
+# docker build --platform=linux/amd64 -t gcr.io/metaxrplorer/witness:base -f builder/witness.dockerfile . --build-arg BOOST_ROOT=/app/boost_1_75_0 --build-arg Boost_LIBRARY_DIRS=/app/boost_1_75_0/libs --build-arg BOOST_INCLUDEDIR=/app/boost_1_75_0/boost 
 FROM ubuntu:kinetic as cloner
 WORKDIR /app
 
@@ -8,7 +8,7 @@ RUN apt-get update && \
 
 RUN git clone https://github.com/seelabs/xbridge_witness witness
 
-FROM transia/builder:1.79.0 as builder
+FROM transia/builder:1.75.0 as builder
 WORKDIR /app
 COPY --from=cloner /app/witness /app
 
@@ -33,8 +33,8 @@ RUN pip install conan
 RUN mkdir build && \
     cd build && \
     conan install -b missing .. && \
-    cmake -DCMAKE_BUILD_TYPE=Debug -CMAKE_PREFIX_PATH=/app/rippled .. && \
-    make -j8
+    cmake -DCMAKE_BUILD_TYPE=Debug .. && \
+    make -j17
 
 FROM ubuntu:kinetic as deployer
 
