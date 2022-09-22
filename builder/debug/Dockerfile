@@ -2,7 +2,7 @@ FROM ubuntu:kinetic
 
 WORKDIR /io
 
-ENV BOOST_ROOT=/io/boost_1_75_0
+ENV BOOST_ROOT=/io/boost_1_79_0
 
 RUN apt-get update && \
     apt-get upgrade -y && \
@@ -18,8 +18,8 @@ RUN apt-get update && \
 RUN wget https://github.com/Kitware/CMake/releases/download/v3.23.1/cmake-3.23.1-Linux-x86_64.sh && \
     sh cmake-3.23.1-Linux-x86_64.sh --prefix=/usr/local --exclude-subdir
 
-RUN wget https://boostorg.jfrog.io/artifactory/main/release/1.75.0/source/boost_1_75_0.tar.gz && \
-    tar -xvzf boost_1_75_0.tar.gz && \
-    cd boost_1_75_0 && ./bootstrap.sh && ./b2 -j 8
+RUN wget https://boostorg.jfrog.io/artifactory/main/release/1.79.0/source/boost_1_79_0.tar.gz && \
+    tar -xvzf boost_1_79_0.tar.gz && \
+    cd boost_1_79_0 && ./bootstrap.sh && ./b2 -j 8
 
 ENTRYPOINT /bin/bash

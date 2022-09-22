@@ -18,10 +18,10 @@ If you downloaded / cloned the [Github repo](https://github.com/WietseWind/docke
 
 > `go/build [username] [name] [version | latest] [production | genesis]`
 
-- `go/build transia xchain production` to build the production container image (tag: `rippled`)
-- `go/build transia xchain genesis` to build the genesis container image (tag: `rippled`)
-- `go/up transia xchain` to create a new container named `rippled` and setup the port and persistent config (*1)
-- `go/down transia xchain` to stop and remove the container `rippled`
+- `go/build transia xbridge production` to build the production container image (tag: `rippled`)
+- `go/build transia xbridge genesis` to build the genesis container image (tag: `rippled`)
+- `go/up transia xbridge` to create a new container named `rippled` and setup the port and persistent config (*1)
+- `go/down transia xbridge` to stop and remove the container `rippled`
 
 The `go/up` command will mount the subfolder (in the cloned repo folder) `config` to the container; the `rippled.cfg` config and `validators.txt` will be loaded from this folder when `rippled` starts. If you stop/start or restart the container, the container will pickup your changes.
 
@@ -35,11 +35,11 @@ After spinning the container up, you will see the rippled log. You should see a 
 
 If you want to build the image manually, use (you can change the tag):
 
-`docker build --tag transia/xchain:latest --target=genesis .`
+`docker build --tag transia/xbridge:latest --target=genesis .`
 
 ### From the Docker Hub
 
-Use the image `transia/xchain`.
+Use the image `transia/xbridge`.
 
 **Because you only retrieved the container image from the Docker Hub, you have to manually create a container based on the image.** When creating the container, please make sure you open port `80`.
 
@@ -51,8 +51,8 @@ This command launches your `rippled` container and the rippled websocket at port
 docker run -dit \
     --name rippled \
     -p 80:80 \
-    -v /my/local/disk/xchain-config/:/config/ \
-    transia/xchain:latest
+    -v /my/local/disk/xbridge-config/:/config/ \
+    transia/xbridge:latest
 ```
 
 You can change the `--name` and **make sure you specify a valid local full path for your volume source, instead of `/my/local/disk/xrpld-config/`**.
@@ -86,13 +86,13 @@ You can now connect to the `rippled` websocket using a client like [ripple-lib](
 # Updating
 
 - **????-??-??** [version] [is released]()
-- **2022-08-25** latest [is released](https://github.com/Transia-RnD/thehub/tree/main/amendments/xchain)
+- **2022-08-25** latest [is released](https://github.com/Transia-RnD/thehub/tree/main/amendments/xbridge)
 
 ## Update process
 
 1. Stop the container: `docker stop rippled` (if you named (`--name`) the container `rippled`)
 2. Remove the container: `docker rm rippled`
-3. Remove the image: `docker rmi transia/xchain:latest` (or if you built the container image based on the [Github repo](https://github.com/WietseWind/docker-rippled): use the image name you specified when building)
+3. Remove the image: `docker rmi transia/xbridge:latest` (or if you built the container image based on the [Github repo](https://github.com/WietseWind/docker-rippled): use the image name you specified when building)
 4. Re-create the container; if you used Git: `git pull` and `go/build` - if you used the Docker Hub: just use the command from this Readme (_From the Docker Hub_), a new version of the image will be downloaded.
 
 **USE THE PATHS YOU SPECIFIED (`-v` argument) WHEN RECREATING THE CONTAINER IF YOU WANT TO KEEP YOUR CONFIG AND/OR DATA!**
@@ -101,8 +101,8 @@ You can now connect to the `rippled` websocket using a client like [ripple-lib](
 
 ```
 version=1.8.1 # sample
-docker build --no-cache --tag transia/xchain:$version .
-docker push transia/xchain:$version
-docker tag transia/xchain:$version transia/xchain:latest
-docker push transia/xchain:latest
+docker build --no-cache --tag transia/xbridge:$version .
+docker push transia/xbridge:$version
+docker tag transia/xbridge:$version transia/xbridge:latest
+docker push transia/xbridge:latest
 ```
