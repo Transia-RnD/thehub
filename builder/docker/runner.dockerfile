@@ -16,10 +16,11 @@ RUN git clone $REPO
 RUN cd rippled && git checkout $BRANCH
 
 FROM gcr.io/metaxrplorer/ccache:latest as builder
-WORKDIR /app
-RUN mkdir /runner && cp -r /app/build /runner/build
-COPY --from=cloner /app/rippled /app
-RUN cp -r /runner/build /app/build
+# RUN rm -r /app
+
+WORKDIR /runner
+COPY --from=cloner /app/rippled /runner
+RUN cp /app/build/CMakeFiles /runner/CMakeFiles
 
 ARG BOOST_ROOT
 ENV BOOST_ROOT $BOOST_ROOT
@@ -28,7 +29,8 @@ ENV Boost_LIBRARY_DIRS $Boost_LIBRARY_DIRS
 ARG BOOST_INCLUDEDIR
 ENV BOOST_INCLUDEDIR $BOOST_INCLUDEDIR
 
-RUN cd build && \
+RUN mkdir build && \
+    cd build && \
     cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_COMPILER_LAUNCHER=ccache -DCMAKE_C_COMPILER_LAUNCHER=ccache .. -Wno-dev && \
     cmake --build . -j32 && \
     ./rippled -u && \
