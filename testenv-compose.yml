@@ -9,7 +9,7 @@ services:
       - "6006:6006"
   explorer:
     build:
-      context: ./builder
+      context: ./builder/docker
       dockerfile: explorer.dockerfile
     container_name: xrpld-explorer
     environment:

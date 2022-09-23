@@ -48,6 +48,8 @@ Enter into docker builder for testing.
 
 `docker run --rm -it transia/builder:1.75.0`
 
+`docker run --rm -it gcr.io/metaxrplorer/ccache:latest`
+
 `docker run -d -it --name icv2 gcr.io/metaxrplorer/icv2:latest`
 
 `docker run --rm -it gcr.io/metaxrplorer/icv2:latest`

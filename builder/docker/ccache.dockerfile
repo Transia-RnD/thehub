@@ -28,4 +28,14 @@ RUN mkdir build && \
     cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_COMPILER_LAUNCHER=ccache -DCMAKE_C_COMPILER_LAUNCHER=ccache .. -Wno-dev && \
     cmake --build . -j32
 
+RUN rm -r /app/rippled
+
 ENTRYPOINT /bin/bash
+
+# FROM ubuntu:kinetic as ccacher
+
+# WORKDIR /app
+
+# COPY --from=builder /.cache/ /.cache
+
+# ENTRYPOINT /bin/bash
