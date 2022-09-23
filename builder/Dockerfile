@@ -26,7 +26,7 @@ ENV BOOST_INCLUDEDIR $BOOST_INCLUDEDIR
 
 RUN mkdir build && \
     cd build && \
-    cmake .. -Wno-dev && \
+    cmake -DCMAKE_BUILD_TYPE=Debug .. -Wno-dev && \
     cmake --build . -j32 && \
     ./rippled -u && \
     strip -s rippled
