@@ -23,7 +23,7 @@ steps:
       '--build-arg', 'Boost_LIBRARY_DIRS=/io/boost_1_75_0/libs',
       '--build-arg', 'BOOST_INCLUDEDIR=/io/boost_1_75_0/boost'
     ]
-    dir: 'builder/cloudbuild/'
+    dir: 'builder/docker/'
   # Push the image
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'gcr.io/$PROJECT_ID/$_NAME:$COMMIT_SHA']

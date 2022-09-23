@@ -18,7 +18,7 @@ steps:
       '.',
       '--cache-from', 'gcr.io/$PROJECT_ID/boost:latest'
     ]
-    dir: 'builder/cloudbuild'
+    dir: 'builder/docker'
   # Push the image
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'gcr.io/$PROJECT_ID/boost:$COMMIT_SHA']
