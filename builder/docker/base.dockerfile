@@ -27,7 +27,7 @@ ENV BOOST_INCLUDEDIR $BOOST_INCLUDEDIR
 
 RUN mkdir build && \
     cd build && \
-    cmake .. -Wno-dev && \
+    cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_COMPILER_LAUNCHER=ccache -DCMAKE_C_COMPILER_LAUNCHER=ccache .. -Wno-dev && \
     cmake --build . -j32 && \
     strip -s rippled
 
