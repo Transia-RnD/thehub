@@ -24,8 +24,12 @@ ENV Boost_LIBRARY_DIRS $Boost_LIBRARY_DIRS
 ARG BOOST_INCLUDEDIR
 ENV BOOST_INCLUDEDIR $BOOST_INCLUDEDIR
 
-RUN mkdir build && cd build && cmake .. -Wno-dev
-RUN cd build && cmake --build . -j17 && strip -s rippled
+RUN mkdir build && \
+    cd build && \
+    cmake .. -Wno-dev && \
+    cmake --build . -j32 && \
+    ./rippled -u && \
+    strip -s rippled
 
 ENTRYPOINT /bin/bash
 
