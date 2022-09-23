@@ -19,7 +19,7 @@ steps:
       '--cache-from', 'gcr.io/$PROJECT_ID/explorer:latest',
       '--build-arg', 'VUE_APP_WSS_ENDPOINT=$_VUE_APP_WSS_ENDPOINT',
     ]
-    dir: 'builder'
+    dir: 'builder/cloudbuild/'
   # Push the image
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'gcr.io/$PROJECT_ID/explorer:$COMMIT_SHA']
