@@ -3,7 +3,6 @@ FROM ubuntu:latest as cloner
 WORKDIR /app
 
 RUN apt-get update && \
-    apt-get upgrade -y && \
     apt-get install -y git
 
 RUN git clone https://github.com/seelabs/xbridge_witness witness
@@ -20,7 +19,6 @@ ARG BOOST_INCLUDEDIR
 ENV BOOST_INCLUDEDIR $BOOST_INCLUDEDIR
 
 RUN apt-get update && \
-    apt-get upgrade -y && \
     apt-get install -y build-essential && \
     apt-get install -y git && \
     apt-get install -y software-properties-common && \
@@ -41,7 +39,7 @@ RUN mkdir build && \
 
 ENTRYPOINT /bin/bash
 
-FROM ubuntu:kinetic as deployer
+FROM ubuntu:latest as deployer
 
 WORKDIR /app
 

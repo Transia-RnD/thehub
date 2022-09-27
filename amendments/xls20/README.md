@@ -7,7 +7,7 @@ The server will keep a history of **only 256 ledgers**. You can change this valu
 The container is configured to serve a public http websocket at port `80` and the local _rpc admin service_ in the container at port `5005`.
 Other ports (443, 6006, 51235) can be mapped but should be enabled in the config first.
 
-This container is running on `ubuntu:kinetic`.
+This container is running on `ubuntu:latest`.
 
 
 ## How to run

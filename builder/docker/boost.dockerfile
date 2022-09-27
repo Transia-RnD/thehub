@@ -5,7 +5,6 @@ WORKDIR /io
 ENV BOOST_ROOT=/io/boost_1_79_0
 
 RUN apt-get update && \
-    apt-get upgrade -y && \
     apt-get install -y build-essential && \
     apt-get install -y git && \
     apt-get install -y pkg-config && \

@@ -5,7 +5,7 @@ ENTRYPOINT /bin/bash
 FROM gcr.io/metaxrplorer/witness:base as witness_base
 ENTRYPOINT /bin/bash
 
-FROM ubuntu:kinetic as cloner
+FROM ubuntu:latest as cloner
 
 # WITNESS (BUILD) IS IN /app/witness
 WORKDIR /app

@@ -1,9 +1,8 @@
 # docker build -t gcr.io/metaxrplorer/ccache:base -f builder/witness.dockerfile . --build-arg BOOST_ROOT=/app/boost_1_75_0 --build-arg Boost_LIBRARY_DIRS=/app/boost_1_75_0/libs --build-arg BOOST_INCLUDEDIR=/app/boost_1_75_0/boost 
-FROM ubuntu:kinetic as cloner
+FROM ubuntu:latest as cloner
 WORKDIR /app
 
 RUN apt-get update && \
-    apt-get upgrade -y && \
     apt-get install -y git
 
 RUN git clone https://github.com/XRPLF/rippled.git
@@ -13,7 +12,6 @@ WORKDIR /app
 COPY --from=cloner /app/rippled /app
 
 RUN apt-get update && \
-    apt-get upgrade -y && \
     apt-get install -y ccache
 
 ARG BOOST_ROOT
@@ -32,7 +30,7 @@ RUN rm -r /app/rippled
 
 ENTRYPOINT /bin/bash
 
-# FROM ubuntu:kinetic as ccacher
+# FROM ubuntu:latest as ccacher
 
 # WORKDIR /app
 

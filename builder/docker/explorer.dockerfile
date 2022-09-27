@@ -1,9 +1,8 @@
 # docker build -t transia/explorer -f explorer.dockerfile . --build-arg VUE_APP_WSS_ENDPOINT=ws://0.0.0.0:80
-FROM ubuntu:kinetic as cloner
+FROM ubuntu:latest as cloner
 WORKDIR /app
 
 RUN apt-get update && \
-    apt-get upgrade -y && \
     apt-get install -y git
 
 RUN git clone https://@github.com/Transia-RnD/XRPL-Technical-Explorer.git explorer

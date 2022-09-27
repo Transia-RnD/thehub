@@ -1,6 +1,6 @@
 # docker build -t gcr.io/metaxrplorer/runner:latest -f builder/docker/runner.dockerfile . --build-arg REPO=https://github.com/Transia-RnD/rippled.git --build-arg BRANCH=PaychanAndEscrowForTokens --build-arg BOOST_ROOT=/io/boost_1_75_0 --build-arg Boost_LIBRARY_DIRS=/io/boost_1_75_0/libs --build-arg BOOST_INCLUDEDIR=/io/boost_1_75_0/boost 
 # docker run --rm -it -v /Users/denisangell/projects/transia-rnd/rippled-icv2:/runner gcr.io/metaxrplorer/runner:latest
-FROM ubuntu:kinetic as cloner
+FROM ubuntu:latest as cloner
 WORKDIR /app
 
 ARG REPO
@@ -9,7 +9,6 @@ ARG BRANCH
 ENV BRANCH $BRANCH
 
 RUN apt-get update && \
-    apt-get upgrade -y && \
     apt-get install -y git
 
 RUN git clone $REPO
