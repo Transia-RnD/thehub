@@ -1,3 +1,4 @@
+# docker build -t gcr.io/metaxrplorer/base:latest -f builder/docker/base.dockerfile . --build-arg REPO=https://github.com/Transia-RnD/rippled.git --build-arg BRANCH=PaychanAndEscrowForTokens --build-arg BOOST_ROOT=/io/boost_1_75_0 --build-arg Boost_LIBRARY_DIRS=/io/boost_1_75_0/libs --build-arg BOOST_INCLUDEDIR=/io/boost_1_75_0/boost 
 FROM ubuntu:kinetic as cloner
 WORKDIR /app
 
@@ -14,6 +15,7 @@ RUN git clone $REPO
 RUN cd rippled && git checkout $BRANCH
 
 FROM transia/builder:1.75.0 as builder
+
 WORKDIR /app
 COPY --from=cloner /app/rippled /app
 
@@ -24,8 +26,11 @@ ENV Boost_LIBRARY_DIRS $Boost_LIBRARY_DIRS
 ARG BOOST_INCLUDEDIR
 ENV BOOST_INCLUDEDIR $BOOST_INCLUDEDIR
 
-RUN mkdir build && cd build && cmake .. -Wno-dev
-RUN cd build && cmake --build . -j17 && strip -s rippled
+RUN mkdir build && \
+    cd build && \
+    cmake -DCMAKE_BUILD_TYPE=Release .. -Wno-dev && \
+    cmake --build . -j32 && \
+    strip -s rippled
 
 ENTRYPOINT /bin/bash
 

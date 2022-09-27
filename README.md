@@ -38,11 +38,17 @@ release: will build a release version of rippled for production
 
 Misc Commands:
 
-`docker build --platform=linux/amd64 --tag transia/xrpld-witness:latest -f builder/witness.dockerfile .`
+`docker build --platform=linux/amd64 --tag transia/witness:latest -f builder/witness.dockerfile .`
+
+`docker build --tag transia/ccache:latest -f builder/ccache.dockerfile .`
+
+`docker cp xrpld-genesis:latest:/var/log/rippled/debug.log debug.log`
 
 Enter into docker builder for testing.
 
 `docker run --rm -it transia/builder:1.75.0`
+
+`docker run --rm -it gcr.io/metaxrplorer/ccache:latest`
 
 `docker run -d -it --name icv2 gcr.io/metaxrplorer/icv2:latest`
 

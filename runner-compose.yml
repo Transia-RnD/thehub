@@ -1,0 +1,12 @@
+# docker compose -f runner-compose.yml up -d
+version: '3.4'
+services:
+  xrpld:
+    build:
+      context: ./builder/docker
+      dockerfile: runner.dockerfile
+    container_name: xrpld-runner
+    # volumes:
+    #   - /Users/denisangell/projects/transia-rnd/rippled-icv2:/runner/rippled
+    # command: >
+    #   ./rippled -u

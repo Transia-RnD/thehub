@@ -1,3 +1,4 @@
+# docker build -t transia/explorer -f explorer.dockerfile . --build-arg VUE_APP_WSS_ENDPOINT=ws://0.0.0.0:80
 FROM ubuntu:kinetic as cloner
 WORKDIR /app
 

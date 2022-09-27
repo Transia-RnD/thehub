@@ -1,18 +1,18 @@
-# docker
+# docker compose -f testenv-compose.yml up -d
 version: '3.4'
 services:
   xrpld:
     image: gcr.io/metaxrplorer/icv2:latest
     container_name: xrpld-genesis
     ports:
-      - "80:80"
+      # - "80:80"
       - "6006:6006"
   explorer:
     build:
-      context: ./builder
+      context: ./builder/docker
       dockerfile: explorer.dockerfile
     container_name: xrpld-explorer
     environment:
-      - VUE_APP_WSS_ENDPOINT=ws://0.0.0.0:80
+      - VUE_APP_WSS_ENDPOINT=ws://0.0.0.0:6006
     ports:
       - "3000:3000"
