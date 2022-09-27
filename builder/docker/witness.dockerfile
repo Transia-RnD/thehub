@@ -29,7 +29,6 @@ RUN apt-get update && \
     apt-get install -y python3-pip && \
     apt-get install -y gcc && \
     apt-get install -y g++ && \
-    apt-get install -y libsoci-dev && \
     apt-get install -y ninja-build
 
 RUN pip install conan
@@ -37,8 +36,8 @@ RUN pip install conan
 RUN mkdir build && \
     cd build && \
     conan install -b missing .. && \
-    cmake -DCMAKE_BUILD_TYPE=Debug -GNinja -Dunity=Off .. && \
-    ninja
+    cmake -DCMAKE_BUILD_TYPE=Debug -GNinja -Dunity=Off ..
+    # ninja
 
 ENTRYPOINT /bin/bash
 
