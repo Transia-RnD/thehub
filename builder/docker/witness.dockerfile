@@ -9,6 +9,9 @@ RUN git clone https://github.com/seelabs/xbridge_witness witness
 
 FROM gcr.io/metaxrplorer/boost as builder
 WORKDIR /app
+ENV DEBIAN_FRONTEND=noninteractive
+ENV TZ=America/New_York
+
 COPY --from=cloner /app/witness /app
 
 ARG BOOST_ROOT
