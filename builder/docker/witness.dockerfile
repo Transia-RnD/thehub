@@ -29,7 +29,7 @@ RUN apt-get update && \
     apt-get install -y python3-pip && \
     apt-get install -y gcc && \
     apt-get install -y g++ && \
-    apt-get install libsoci-dev && \
+    apt-get install -y libsoci-dev && \
     apt-get install -y ninja-build
 
 RUN pip install conan
@@ -40,10 +40,12 @@ RUN mkdir build && \
     cmake -DCMAKE_BUILD_TYPE=Debug -GNinja -Dunity=Off .. && \
     ninja
 
-FROM ubuntu:kinetic as deployer
-
-WORKDIR /app
-
-COPY --from=builder /app/build/witness /app/witness
-
 ENTRYPOINT /bin/bash
+
+# FROM ubuntu:kinetic as deployer
+
+# WORKDIR /app
+
+# COPY --from=builder /app/build/witness /app/witness
+
+# ENTRYPOINT /bin/bash
