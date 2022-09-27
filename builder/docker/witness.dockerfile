@@ -23,7 +23,8 @@ ENV BOOST_INCLUDEDIR $BOOST_INCLUDEDIR
 
 RUN apt-get update && \
     apt-get install -y build-essential && \
-    apt-get install -y git
+    apt-get install -y git && \
+    apt-get install -y libsoci-dev
     # apt-get install -y software-properties-common && \
     # add-apt-repository ppa:deadsnakes/ppa && \
     # apt-get install -y python3.11 && \
