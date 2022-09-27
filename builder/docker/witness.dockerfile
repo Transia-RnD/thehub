@@ -8,7 +8,7 @@ RUN apt-get update && \
 
 RUN git clone https://github.com/seelabs/xbridge_witness witness
 
-FROM transia/builder:1.79.0 as builder
+FROM gcr.io/metaxrplorer/boost as builder
 WORKDIR /app
 COPY --from=cloner /app/witness /app
 
