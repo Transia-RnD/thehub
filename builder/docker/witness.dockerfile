@@ -33,8 +33,8 @@ RUN pip install conan
 RUN mkdir build && \
     cd build && \
     conan install -b missing .. && \
-    cmake -DCMAKE_BUILD_TYPE=Debug .. && \
-    make -j17
+    cmake -DCMAKE_BUILD_TYPE=Debug -GNinja -Dunity=Off .. && \
+    ninja
 
 FROM ubuntu:kinetic as deployer
 
