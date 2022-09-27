@@ -29,6 +29,7 @@ RUN apt-get update && \
     apt-get install -y python3-pip && \
     apt-get install -y gcc && \
     apt-get install -y g++ && \
+    apt-get install libsoci-dev && \
     apt-get install -y ninja-build
 
 RUN pip install conan
