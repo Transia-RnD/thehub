@@ -36,15 +36,15 @@ RUN pip install conan
 RUN mkdir build && \
     cd build && \
     conan install -b missing --settings build_type=Debug .. && \
-    cmake -DCMAKE_BUILD_TYPE=Debug -GNinja -Dunity=Off ..
-    # ninja
+    cmake -DCMAKE_BUILD_TYPE=Debug -GNinja -Dunity=Off .. && \
+    ninja
 
 ENTRYPOINT /bin/bash
 
-# FROM ubuntu:kinetic as deployer
+FROM ubuntu:kinetic as deployer
 
-# WORKDIR /app
+WORKDIR /app
 
-# COPY --from=builder /app/build/witness /app/witness
+COPY --from=builder /app/build/witness /app/witness
 
-# ENTRYPOINT /bin/bash
+ENTRYPOINT /bin/bash
