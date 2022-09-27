@@ -26,7 +26,8 @@ RUN apt-get update && \
     apt-get install -y software-properties-common && \
     add-apt-repository ppa:deadsnakes/ppa && \
     apt-get install -y python3.11 && \
-    apt-get install -y python3-pip
+    apt-get install -y python3-pip && \
+    apt-get install -y ninja-build
 
 RUN pip install conan
 
