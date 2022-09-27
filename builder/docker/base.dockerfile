@@ -25,8 +25,7 @@ ENV Boost_LIBRARY_DIRS $Boost_LIBRARY_DIRS
 ARG BOOST_INCLUDEDIR
 ENV BOOST_INCLUDEDIR $BOOST_INCLUDEDIR
 
-RUN mkdir build && \
-    cd build && \
+RUN mkdir build && cd build && \
     cmake -DCMAKE_BUILD_TYPE=Release .. -Wno-dev && \
     cmake --build . -j32 && \
     strip -s rippled
