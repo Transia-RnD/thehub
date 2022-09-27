@@ -13,7 +13,7 @@ RUN apt-get update && \
 RUN git clone $REPO
 RUN cd rippled && git checkout $BRANCH
 
-FROM transia/builder:1.75.0 as builder
+FROM gcr.io/metaxrplorer/boost as builder
 
 WORKDIR /app
 COPY --from=cloner /app/rippled /app

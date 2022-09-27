@@ -24,23 +24,20 @@ ENV BOOST_INCLUDEDIR $BOOST_INCLUDEDIR
 RUN apt-get update && \
     apt-get install -y build-essential && \
     apt-get install -y git && \
-    apt-get install -y libsoci-dev
-    # apt-get install -y software-properties-common && \
-    # add-apt-repository ppa:deadsnakes/ppa && \
-    # apt-get install -y python3.11 && \
-    # apt-get install -y python3-pip && \
-    # apt-get install -y gcc && \
-    # apt-get install -y g++ && \
-    # apt-get install -y ninja-build
+    apt-get install -y software-properties-common && \
+    add-apt-repository ppa:deadsnakes/ppa && \
+    apt-get install -y python3.11 && \
+    apt-get install -y python3-pip && \
+    apt-get install -y gcc && \
+    apt-get install -y g++ && \
+    apt-get install -y ninja-build
 
-# RUN pip install conan
+RUN pip install conan
 
 RUN mkdir build && cd build && \
-    cmake .. -Wno-dev && \
-    cmake --build . -j32
-    # conan install -b missing --settings build_type=Debug .. && \
-    # cmake -DCMAKE_BUILD_TYPE=Debug -GNinja -Dunity=Off .. && \
-    # ninja
+    conan install -b missing --settings build_type=Debug .. && \
+    cmake -DCMAKE_BUILD_TYPE=Debug -GNinja -Dunity=Off .. && \
+    ninja
 
 ENTRYPOINT /bin/bash
 
