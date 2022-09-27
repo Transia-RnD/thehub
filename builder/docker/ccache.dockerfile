@@ -1,5 +1,5 @@
 # docker build -t gcr.io/metaxrplorer/ccache:base -f builder/witness.dockerfile . --build-arg BOOST_ROOT=/app/boost_1_75_0 --build-arg Boost_LIBRARY_DIRS=/app/boost_1_75_0/libs --build-arg BOOST_INCLUDEDIR=/app/boost_1_75_0/boost 
-FROM ubuntu:latest as cloner
+FROM ubuntu:kinetic as cloner
 WORKDIR /app
 
 RUN apt-get update && \
@@ -30,7 +30,7 @@ RUN rm -r /app/rippled
 
 ENTRYPOINT /bin/bash
 
-# FROM ubuntu:latest as ccacher
+# FROM ubuntu:kinetic as ccacher
 
 # WORKDIR /app
 

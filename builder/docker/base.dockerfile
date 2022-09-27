@@ -1,5 +1,5 @@
 # docker build -t gcr.io/metaxrplorer/base:latest -f builder/docker/base.dockerfile . --build-arg REPO=https://github.com/Transia-RnD/rippled.git --build-arg BRANCH=PaychanAndEscrowForTokens --build-arg BOOST_ROOT=/io/boost_1_75_0 --build-arg Boost_LIBRARY_DIRS=/io/boost_1_75_0/libs --build-arg BOOST_INCLUDEDIR=/io/boost_1_75_0/boost 
-FROM ubuntu:latest as cloner
+FROM ubuntu:kinetic as cloner
 WORKDIR /app
 
 ARG REPO
@@ -33,7 +33,7 @@ RUN mkdir build && \
 
 ENTRYPOINT /bin/bash
 
-FROM ubuntu:latest as definitions
+FROM ubuntu:kinetic as definitions
 WORKDIR /app
 
 RUN apt-get update && \
@@ -45,7 +45,7 @@ COPY --from=cloner /app/rippled /app
 RUN git clone https://github.com/RichardAH/xrpl-codec-gen.git
 RUN cd xrpl-codec-gen && node gen.js /app/src/ripple > /app/definitions.json
 
-FROM ubuntu:latest as deployer
+FROM ubuntu:kinetic as deployer
 
 WORKDIR /app
 
