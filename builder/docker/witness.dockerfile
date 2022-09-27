@@ -35,7 +35,7 @@ RUN pip install conan
 
 RUN mkdir build && \
     cd build && \
-    conan install -b missing .. && \
+    conan install -b missing --settings build_type=Debug .. && \
     cmake -DCMAKE_BUILD_TYPE=Debug -GNinja -Dunity=Off ..
     # ninja
 
