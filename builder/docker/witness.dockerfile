@@ -55,6 +55,6 @@ FROM ubuntu:jammy as deployer
 
 WORKDIR /app
 
-COPY --from=builder /app/build/witness /app/witness
+COPY --from=builder /app/build/xbridge_witnessd /app/witness
 
 ENTRYPOINT /bin/bash
