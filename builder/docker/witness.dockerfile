@@ -38,24 +38,23 @@ RUN apt-get update && \
     apt-get install -y gcc && \
     apt-get install -y g++ && \
     apt-get install -y ninja-build && \
-    apt-get install -y wget && \
     apt-get install -y cmake && \
-    apt-get install -y libboost1.79-dev
+    apt-get install -y libboost1.79-dev-all
     
-RUN pip3 install conan
+# RUN pip3 install conan
 
-RUN mkdir build && cd build && \
-    conan install -b missing --settings build_type=Debug .. && \
-    cmake -DCMAKE_BUILD_TYPE=Debug -GNinja -Dunity=Off .. && \
-    ninja
+# RUN mkdir build && cd build && \
+#     conan install -b missing --settings build_type=Debug .. && \
+#     cmake -DCMAKE_BUILD_TYPE=Debug -GNinja -Dunity=Off .. && \
+#     ninja
 
 ENTRYPOINT /bin/bash
 
 # Pull exe from build directory so that the image ONLY contains the exe
-FROM ubuntu:bionic as deployer
+# FROM ubuntu:jammy as deployer
 
-WORKDIR /app
+# WORKDIR /app
 
-COPY --from=builder /app/build/witness /app/witness
+# COPY --from=builder /app/build/witness /app/witness
 
-ENTRYPOINT /bin/bash
+# ENTRYPOINT /bin/bash
