@@ -49,11 +49,11 @@ RUN mkdir build && cd build && \
 
 ENTRYPOINT /bin/bash
 
-# Pull exe from build directory so that the image ONLY contains the exe
-# FROM ubuntu:jammy as deployer
+Pull exe from build directory so that the image ONLY contains the exe
+FROM ubuntu:jammy as deployer
 
-# WORKDIR /app
+WORKDIR /app
 
-# COPY --from=builder /app/build/witness /app/witness
+COPY --from=builder /app/build/witness /app/witness
 
-# ENTRYPOINT /bin/bash
+ENTRYPOINT /bin/bash
