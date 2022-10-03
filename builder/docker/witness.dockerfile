@@ -44,8 +44,8 @@ RUN pip3 install conan
 RUN mkdir build && cd build && \
     conan profile new default --detect && \
     conan profile update settings.compiler.libcxx=libstdc++11 default && \
-    conan install -b missing --settings .. && \
-    cmake -GNinja -Dunity=Off .. && \
+    conan install -b missing --settings build_type=Debug .. && \
+    cmake -DCMAKE_BUILD_TYPE=Debug -GNinja -Dunity=Off .. && \
     ninja
 
 ENTRYPOINT /bin/bash
