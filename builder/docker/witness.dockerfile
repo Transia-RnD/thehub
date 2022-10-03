@@ -9,19 +9,19 @@ RUN apt-get update && \
 RUN git clone https://github.com/seelabs/xbridge_witness witness
 
 # Build the service
-FROM ubuntu:jammy as builder
+FROM gcr.io/metaxrplorer/boost:latest as builder
 WORKDIR /app
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=America/New_York
 
 COPY --from=cloner /app/witness /app
 
-# ARG BOOST_ROOT
-# ENV BOOST_ROOT $BOOST_ROOT
-# ARG Boost_LIBRARY_DIRS
-# ENV Boost_LIBRARY_DIRS $Boost_LIBRARY_DIRS
-# ARG BOOST_INCLUDEDIR
-# ENV BOOST_INCLUDEDIR $BOOST_INCLUDEDIR
+ARG BOOST_ROOT
+ENV BOOST_ROOT $BOOST_ROOT
+ARG Boost_LIBRARY_DIRS
+ENV Boost_LIBRARY_DIRS $Boost_LIBRARY_DIRS
+ARG BOOST_INCLUDEDIR
+ENV BOOST_INCLUDEDIR $BOOST_INCLUDEDIR
 
 RUN apt-get update && \
     apt-get install -y build-essential && \
@@ -37,9 +37,7 @@ RUN apt-get update && \
     apt-get install -y python3-pip && \
     apt-get install -y gcc && \
     apt-get install -y g++ && \
-    apt-get install -y ninja-build && \
-    apt-get install -y cmake && \
-    apt-get install -y libboost1.79-dev-all
+    apt-get install -y ninja-build
     
 # RUN pip3 install conan
 
