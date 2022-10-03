@@ -1,4 +1,4 @@
-# docker build --platform=linux/amd64 -t gcr.io/metaxrplorer/witness:base -f builder/docker/witness.dockerfile . --build-arg BOOST_ROOT=/app/boost_1_79_0 --build-arg Boost_LIBRARY_DIRS=/app/boost_1_79_0/libs --build-arg BOOST_INCLUDEDIR=/app/boost_1_79_0/boost 
+# docker build --platform=linux/amd64 -t gcr.io/metaxrplorer/witness:base -f builder/docker/witness.dockerfile . --build-arg BOOST_ROOT=/io/boost_1_79_0 --build-arg Boost_LIBRARY_DIRS=/io/boost_1_79_0/libs --build-arg BOOST_INCLUDEDIR=/io/boost_1_79_0/boost 
 # Clone the repository
 FROM ubuntu:jammy as cloner
 WORKDIR /app
