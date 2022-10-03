@@ -1,6 +1,6 @@
 # docker build --platform=linux/amd64 -t gcr.io/metaxrplorer/witness:base -f builder/docker/witness.dockerfile . --build-arg BOOST_ROOT=/app/boost_1_79_0 --build-arg Boost_LIBRARY_DIRS=/app/boost_1_79_0/libs --build-arg BOOST_INCLUDEDIR=/app/boost_1_79_0/boost 
 # Clone the repository
-FROM ubuntu:kinetic as cloner
+FROM ubuntu:jammy as cloner
 WORKDIR /app
 
 RUN apt-get update && \
@@ -9,7 +9,7 @@ RUN apt-get update && \
 RUN git clone https://github.com/seelabs/xbridge_witness witness
 
 # Build the service
-FROM ubuntu:kinetic as builder
+FROM ubuntu:jammy as builder
 WORKDIR /app
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=America/New_York
@@ -38,16 +38,11 @@ RUN apt-get update && \
     apt-get install -y gcc && \
     apt-get install -y g++ && \
     apt-get install -y ninja-build && \
-    apt-get install -y wget
-
-RUN wget https://github.com/Kitware/CMake/releases/download/v3.23.1/cmake-3.23.1-Linux-x86_64.sh && \
-    sh cmake-3.23.1-Linux-x86_64.sh --prefix=/usr/local --exclude-subdir
-
-RUN wget https://boostorg.jfrog.io/artifactory/main/release/1.79.0/source/boost_1_79_0.tar.gz && \
-    tar -xvzf boost_1_79_0.tar.gz && \
-    cd boost_1_79_0 && ./bootstrap.sh && ./b2 -j 8
-
-RUN pip install conan
+    apt-get install -y wget && \
+    apt-get install -y cmake && \
+    apt-get install -y libboost-all-dev
+    
+RUN pip3 install conan
 
 RUN mkdir build && cd build && \
     conan install -b missing --settings build_type=Debug .. && \
@@ -57,7 +52,7 @@ RUN mkdir build && cd build && \
 ENTRYPOINT /bin/bash
 
 # Pull exe from build directory so that the image ONLY contains the exe
-FROM ubuntu:kinetic as deployer
+FROM ubuntu:bionic as deployer
 
 WORKDIR /app
 
