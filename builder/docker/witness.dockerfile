@@ -9,7 +9,8 @@ RUN apt-get update && \
 RUN git clone https://github.com/seelabs/xbridge_witness witness
 
 # Build the service
-FROM gcr.io/metaxrplorer/boost:latest as builder
+# FROM gcr.io/metaxrplorer/boost:latest as builder
+FROM ubuntu:jammy as builder
 WORKDIR /app
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=America/New_York
@@ -31,6 +32,7 @@ RUN apt-get update && \
     apt-get install -y libprotobuf-dev && \
     apt-get install -y libssl-dev && \
     apt-get install -y doxygen && \
+    apt-get install -y wget && \
     apt-get install -y software-properties-common && \
     add-apt-repository ppa:deadsnakes/ppa && \
     apt-get install -y python3.11 && \
@@ -38,6 +40,13 @@ RUN apt-get update && \
     apt-get install -y gcc && \
     apt-get install -y g++ && \
     apt-get install -y ninja-build
+
+RUN wget https://github.com/Kitware/CMake/releases/download/v3.23.1/cmake-3.23.1-Linux-x86_64.sh && \
+    sh cmake-3.23.1-Linux-x86_64.sh --prefix=/usr/local --exclude-subdir
+
+RUN wget https://boostorg.jfrog.io/artifactory/main/release/1.79.0/source/boost_1_79_0.tar.gz && \
+    tar -xvzf boost_1_79_0.tar.gz && \
+    cd boost_1_79_0 && ./bootstrap.sh && ./b2 -j 32
     
 RUN pip3 install conan
 
