@@ -42,8 +42,9 @@ RUN apt-get update && \
 RUN pip3 install conan
 
 RUN mkdir build && cd build && \
-    conan install -b missing --settings .. && \
+    conan profile new default --detect && \
     conan profile update settings.compiler.libcxx=libstdc++11 default && \
+    conan install -b missing --settings .. && \
     cmake -GNinja -Dunity=Off .. && \
     ninja
 
