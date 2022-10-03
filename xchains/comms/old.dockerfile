@@ -1,12 +1,12 @@
 # docker build --platform=linux/amd64 -t gcr.io/metaxrplorer/comms:base -f Dockerfile . --build-arg XCHAIN_CONFIG_DIR=/app/config --build-arg RIPPLED_EXE=/app/rippled --build-arg WITNESSD_EXE=/app/witness 
 # docker run --rm -it gcr.io/metaxrplorer/comms:base
-FROM gcr.io/metaxrplorer/xchain:base as rippled_base
+FROM gcr.io/metaxrplorer/xbridge:base as rippled_base
 ENTRYPOINT /bin/bash
 
-FROM transia/witness:latest as witness_base
+FROM gcr.io/metaxrplorer/witness:base as witness_base
 ENTRYPOINT /bin/bash
 
-FROM ubuntu:kinetic as cloner
+FROM ubuntu:jammy as cloner
 
 LABEL maintainer="dangell@transia.co"
 ENV DEBIAN_FRONTEND=noninteractive

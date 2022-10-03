@@ -1,0 +1,82 @@
+{
+    "chains": [
+        {
+            "name": "issuing_chain",
+            "type": "rippled",
+            "pid": 97,
+            "rippled": "/app/rippled",
+            "config": "/config/issuing_chain/rippled.cfg",
+            "ws_ip": "issuing-chain",
+            "ws_port": 6008,
+            "http_ip": "issuing-chain",
+            "http_port": 5006
+        },
+        {
+            "name": "locking_chain",
+            "type": "rippled",
+            "pid": 112,
+            "rippled": "/app/rippled",
+            "config": "/config/locking_chain/rippled.cfg",
+            "ws_ip": "locking-chain",
+            "ws_port": 6006,
+            "http_ip": "locking-chain",
+            "http_port": 5005
+        }
+    ],
+    "witnesses": [
+        {
+            "name": "witness0",
+            "type": "witness",
+            "pid": 146,
+            "witnessd": "/app/witness",
+            "config": "/config/witness0/witness.json",
+            "ip": "witness0",
+            "rpc_port": 6010
+        },
+        {
+            "name": "witness1",
+            "type": "witness",
+            "pid": 161,
+            "witnessd": "/app/witness",
+            "config": "/config/witness1/witness.json",
+            "ip": "witness1",
+            "rpc_port": 6011
+        },
+        {
+            "name": "witness2",
+            "type": "witness",
+            "pid": 127,
+            "witnessd": "/app/witness",
+            "config": "/config/witness2/witness.json",
+            "ip": "witness2",
+            "rpc_port": 6012
+        }
+    ],
+    "bridges": [
+        {
+            "name": "bridge",
+            "chains": [
+                "locking_chain",
+                "issuing_chain"
+            ],
+            "witnesses": [
+                "witness0",
+                "witness1",
+                "witness2"
+            ],
+            "door_accounts": [
+                "rJDp8voeFLyijTcZxVHKpaUC9BVj9tWvBx",
+                "rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh"
+            ],
+            "xchain_currencies": [
+                "XRP",
+                "XRP"
+            ],
+            "signature_reward": "100",
+            "create_account_amounts": [
+                "5000000",
+                "5000000"
+            ]
+        }
+    ]
+}
