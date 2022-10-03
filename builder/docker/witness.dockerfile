@@ -39,12 +39,13 @@ RUN apt-get update && \
     apt-get install -y g++ && \
     apt-get install -y ninja-build
     
-# RUN pip3 install conan
+RUN pip3 install conan
 
-# RUN mkdir build && cd build && \
-#     conan install -b missing --settings build_type=Debug .. && \
-#     cmake -DCMAKE_BUILD_TYPE=Debug -GNinja -Dunity=Off .. && \
-#     ninja
+RUN mkdir build && cd build && \
+    conan profile update settings.compiler.libcxx=libstdc++11 default && \
+    conan install -b missing --settings .. && \
+    cmake -GNinja -Dunity=Off .. && \
+    ninja
 
 ENTRYPOINT /bin/bash
 

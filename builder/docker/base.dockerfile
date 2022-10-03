@@ -13,7 +13,7 @@ RUN apt-get update && \
 RUN git clone $REPO
 RUN cd rippled && git checkout $BRANCH
 
-FROM gcr.io/metaxrplorer/boost as builder
+FROM gcr.io/metaxrplorer/boost:latest as builder
 
 WORKDIR /app
 COPY --from=cloner /app/rippled /app
@@ -26,8 +26,8 @@ ARG BOOST_INCLUDEDIR
 ENV BOOST_INCLUDEDIR $BOOST_INCLUDEDIR
 
 RUN mkdir build && cd build && \
-    cmake -DCMAKE_BUILD_TYPE=Release .. -Wno-dev && \
-    cmake --build . -j32 && \
+    cmake .. -Wno-dev && \
+    cmake -Dunity=Off --build . -j8 && \
     strip -s rippled
 
 ENTRYPOINT /bin/bash
