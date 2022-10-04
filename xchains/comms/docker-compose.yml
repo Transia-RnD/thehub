@@ -15,6 +15,13 @@ services:
       - "51236:51236"
     networks:
       - witnessd
+  issuing_explorer:
+    image: gcr.io/metaxrplorer/explorer:latest
+    container_name: issuing-explorer
+    environment:
+      - VUE_APP_WSS_ENDPOINT=ws://0.0.0.0:6008
+    ports:
+      - "3001:3001"
   locking_chain:
     build:
       dockerfile: rippled.dockerfile
@@ -29,6 +36,13 @@ services:
       - "51235:51235"
     networks:
       - witnessd
+  locking_explorer:
+    image: gcr.io/metaxrplorer/explorer:latest
+    container_name: locking-explorer
+    environment:
+      - VUE_APP_WSS_ENDPOINT=ws://0.0.0.0:6005
+    ports:
+      - "3000:3000"
   witness0:
     tty: true
     build:
@@ -80,13 +94,6 @@ services:
     container_name: sidechain-py
     networks:
       - witnessd
-  explorer:
-    image: gcr.io/metaxrplorer/explorer:latest
-    container_name: xrpld-explorer
-    environment:
-      - VUE_APP_WSS_ENDPOINT=ws://0.0.0.0:6006
-    ports:
-      - "3000:3000"
 networks:
   witnessd:
     driver: bridge
