@@ -30,6 +30,6 @@ FROM ubuntu:kinetic as deployer
 
 WORKDIR /app
 
-COPY --from=builder /validator/build/validator-keys /app/validator
+COPY --from=builder /app/build/validator-keys /app/validator
 
 ENTRYPOINT /bin/bash
