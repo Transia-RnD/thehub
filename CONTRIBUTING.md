@@ -37,7 +37,13 @@ Enter into docker builder for testing.
 
 `docker run -d -it --name icv2 gcr.io/metaxrplorer/icv2:latest`
 
-`docker run --rm -it gcr.io/metaxrplorer/witness:latest`
+`docker run --rm -it --name validator gcr.io/metaxrplorer/validator:base`
+
+`docker run -d -it -p 3000:3000 --name explorer transia/explorer`
+
+`docker cp validator:/root/.ripple/validator-keys.json keystore/publisher.json`
+
+`docker cp validator:/root/.ripple/validator-keys.json validation/validator-keys.json`
 
 Manually Extract rippled exe
 

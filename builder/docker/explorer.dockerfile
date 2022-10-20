@@ -5,9 +5,10 @@ WORKDIR /app
 RUN apt-get update && \
     apt-get install -y git
 
-RUN git clone https://@github.com/Transia-RnD/XRPL-Technical-Explorer.git explorer
+RUN git clone https://github.com/Transia-RnD/explorer.git explorer
 
-FROM node:16.17.0-alpine AS builder
+# FROM node:16.17.0-alpine AS builder
+FROM node:15.0.0-alpine AS builder
 WORKDIR /app
 
 ARG VUE_APP_WSS_ENDPOINT
