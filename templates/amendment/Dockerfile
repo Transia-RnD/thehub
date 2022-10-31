@@ -1,6 +1,5 @@
 FROM gcr.io/metaxrplorer/icv2:base as base
 
-# RIPPLED (BUILD) IS IN /app/rippled
 WORKDIR /app
 
 LABEL maintainer="w@xrpl-labs.com"
@@ -16,11 +15,10 @@ RUN chmod +x /entrypoint.sh && \
 
 EXPOSE 80 443 5005 6006 51235
 
-FROM base AS genesis
-RUN echo "BUILDING GENESIS RIPPLED"
-ENTRYPOINT [ "/entrypoint.sh", "-a" ]
-
-
 FROM base AS production
-RUN echo "BUILDING PRODUCTION RIPPLED"
+RUN echo "PRODUCTION RIPPLED"
 ENTRYPOINT [ "/entrypoint.sh" ]
+
+FROM base AS standalone
+RUN echo "STANDALONE RIPPLED"
+ENTRYPOINT [ "/entrypoint.sh", "-a" ]
