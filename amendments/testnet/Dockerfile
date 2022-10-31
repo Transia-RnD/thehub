@@ -1,6 +1,7 @@
-FROM gcr.io/metaxrplorer/testnet:base as base
+ARG IMAGE
+FROM ${IMAGE} AS builder
+# FROM gcr.io/metaxrplorer/testnet:base as base
 
-# RIPPLED (BUILD) IS IN /app/rippled
 WORKDIR /app
 
 LABEL maintainer="dangell@transia.co"
@@ -19,9 +20,9 @@ EXPOSE 80 443 5005 6006 51235
 RUN export DOCKER_BUILDKIT=1
 
 FROM base AS production
-RUN echo "BUILDING PRODUCTION RIPPLED"
+RUN echo "PRODUCTION RIPPLED"
 ENTRYPOINT [ "/entrypoint.sh" ]
 
-FROM base AS genesis
-RUN echo "BUILDING GENESIS RIPPLED"
+FROM base AS standalone
+RUN echo "STANDALONE RIPPLED"
 ENTRYPOINT [ "/entrypoint.sh", "-a" ]

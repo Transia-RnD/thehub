@@ -16,10 +16,10 @@ This container is running on `ubuntu:kinetic`.
 
 If you downloaded / cloned the [Github repo](https://github.com/WietseWind/docker-rippled) you got yourself a few scripts to get started. In the `./go` folder, the following scripts are available, run:
 
-> `go/build [username] [name] [version | latest] [production | genesis]`
+> `go/build [username] [name] [version | latest] [production | standalone]`
 
 - `go/build transia testnet production` to build the production container image (tag: `rippled`)
-- `go/build transia testnet genesis` to build the genesis container image (tag: `rippled`)
+- `go/build transia testnet standalone` to build the standalone container image (tag: `rippled`)
 - `go/up transia testnet` to create a new container named `rippled` and setup the port and persistent config (*1)
 - `go/down transia testnet` to stop and remove the container `rippled`
 
@@ -35,7 +35,7 @@ After spinning the container up, you will see the rippled log. You should see a 
 
 If you want to build the image manually, use (you can change the tag):
 
-`docker build --tag transia/testnet:latest --target=genesis .`
+`docker build --tag transia/testnet:latest --target=standalone .`
 
 ### From the Docker Hub
 
