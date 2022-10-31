@@ -26,8 +26,8 @@ ARG BOOST_INCLUDEDIR
 ENV BOOST_INCLUDEDIR $BOOST_INCLUDEDIR
 
 RUN mkdir build && cd build && \
-    cmake .. -Wno-dev && \
-    cmake -Dunity=Off --build . -j8 && \
+    cmake -DCMAKE_BUILD_TYPE=Release .. && \
+    cmake --build . && \
     strip -s rippled
 
 ENTRYPOINT /bin/bash
