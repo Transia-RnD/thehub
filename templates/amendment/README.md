@@ -16,10 +16,10 @@ This container is running on `ubuntu:kinetic`.
 
 If you downloaded / cloned the [Github repo](https://github.com/WietseWind/docker-rippled) you got yourself a few scripts to get started. In the `./go` folder, the following scripts are available, run:
 
-> `go/build [username] [name] [version | latest] [production | genesis]`
+> `go/build [username] [name] [version | latest] [production | standalone]`
 
 - `go/build transia icv2 production` to build the production container image (tag: `rippled`)
-- `go/build transia icv2 genesis` to build the genesis container image (tag: `rippled`)
+- `go/build transia icv2 standalone` to build the standalone container image (tag: `rippled`)
 - `go/up transia icv2` to create a new container named `rippled` and setup the port and persistent config (*1)
 - `go/down transia icv2` to stop and remove the container `rippled`
 
@@ -35,7 +35,7 @@ After spinning the container up, you will see the rippled log. You should see a 
 
 If you want to build the image manually, use (you can change the tag):
 
-`docker build --tag transia/icv2:latest --target=genesis .`
+`docker build --tag transia/icv2:latest --target=standalone .`
 
 ### From the Docker Hub
 
