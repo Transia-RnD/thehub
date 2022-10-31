@@ -1,4 +1,5 @@
 
+import sys
 import time
 from typing import Dict, Any, List  # noqa: F401
 from utils import read_json, write_json, read_txt
@@ -6,9 +7,7 @@ import json
 import base64
 import subprocess
 
-from xrpl.core.binarycodec.main import (
-    decode,
-)
+from xrpl.core.binarycodec.main import decode
 
 # result = read_json('validation/list.json')
 # # print(result['validators'])
@@ -44,24 +43,34 @@ class ValidationPublisher(object):
     }
 
     expiration: int = 86400 * 30 # expires in 30 days
+    name: str = ''  # node1 | node2 | signer
     mode: str = 'publisher'  # publisher | validator
 
-    def __init__(cls, mode: str) -> None:
+    def __init__(cls, mode: str, name: str) -> None:
         try:
             cls.mode = mode
+            cls.name = name
+            cls.vl = read_json('out/vl.json')
+
+            if not cls.vl:
+                print('RESETING - NO VL')
+                cls.reset()
+                return
+            
+            if 'blob' not in cls.vl:
+                print('RESETING - NO BLOB')
+                cls.reset()
+                return
+
+            cls.blob_json = cls.decode_blob(cls.vl['blob'])
+            
             if not read_json(f'/app/publisher/keystore/{cls.mode}.json'):
                 print('NO KEYS')
                 cls.create_keys()
                 cls.reset()
-
-            cls.vl = read_json('out/vl.json')
-            if not cls.vl and cls.vl['blob'] != None:
-                cls.blob_json = cls.decode_blob(cls.vl['blob'])
-        
-        except:
-            print('RESETING...')
-            # cls.create_keys()
-            cls.reset()
+                
+        except Exception as e:
+            print(e)
 
     def reset(cls):
         cls.vl: Dict[str, Any] = {
@@ -89,10 +98,10 @@ class ValidationPublisher(object):
 
     def create_token(cls) -> str:
         out = open(f'keystore/{cls.mode}/token.txt', 'w')
-        args1 = ['mkdir -p /root/.ripple/validator-keys.json']
-        subprocess.call(args1)
-        args2 = ['cp', f'/app/publisher/keystore/{cls.mode}.json', '/root/.ripple/validator-keys.json']
-        subprocess.call(args2)
+        # args1 = ['mkdir -p /root/.ripple/validator-keys.json']
+        # subprocess.call(args1)
+        # args2 = ['cp', f'/app/publisher/keystore/{cls.mode}.json', '/root/.ripple/validator-keys.json']
+        # subprocess.call(args2)
         args3 = ['/app/validator', 'create_token']
         subprocess.call(args3, stdout=out)
         return read_txt(f'keystore/{cls.mode}/token.txt')
@@ -106,7 +115,7 @@ class ValidationPublisher(object):
 
     def get_signature(cls) -> str:
         out = open('out/signature.txt', 'w')
-        args = ['/app/validator', 'sign', cls.encode_blob()]
+        args = ['/app/validator', 'sign', cls.encode_blob().hex()]
         subprocess.call(args, stdout=out)
         return read_txt('out/signature.txt')
 
@@ -115,19 +124,26 @@ class ValidationPublisher(object):
         cls.get_manifest()
 
     def update(cls) -> None:
+        print('UPDATING PUBLISHER LIST')
         manifest = [l.strip() for l in cls.get_manifest()]
         cls.vl['manifest'] = manifest[1]
         encoded = base64.b64decode(cls.vl['manifest']).hex()
         decoded: Dict[str, Any] = decode(encoded)
         cls.vl['public_key'] = decoded['PublicKey'].upper()
 
-        cls.vl['blob'] = cls.encode_blob()
+        cls.vl['blob'] = cls.encode_blob().decode('utf-8')
         signature = [l.strip() for l in cls.get_signature()]
         cls.vl['signature'] = signature[0]
         cls.vl['version'] = 1
-        write_json(cls.vl, 'vl.json')
+        write_json(cls.vl, 'out/vl.json')
 
     def add_validator(cls, manifest: str):
+        if not cls.vl:
+            raise ValueError('INVALID VL')
+        if not cls.blob_json:
+            raise ValueError('INVALID BLOB JSON')
+        
+        print('ADDING MANIFEST TO VL')
         encoded = base64.b64decode(manifest).hex()
         decoded: Dict[str, Any] = decode(encoded)
         public_key: str = decoded['PublicKey'].upper()
@@ -138,21 +154,26 @@ class ValidationPublisher(object):
         vlist: List[Dict[str, Any]] = cls.blob_json['validators']
         vlist.append(new_validator)
         cls.blob_json['sequence'] += 1
-        # cls.blob_json['expiration'] = (int(time.time()) + cls.expiration) - 946684800
-        cls.blob_json['expiration'] = 721785600
+        cls.blob_json['expiration'] = (int(time.time()) + cls.expiration) - 946684800
+        # cls.blob_json['expiration'] = 721785600
         cls.blob_json['validators'] = vlist
-        print(cls.blob_json)
+        # print(cls.blob_json)
         cls.update()
 
     def remove_validator(cls, public_key: str):
+        if not cls.vl:
+            raise ValueError('INVALID VL')
+        if not cls.blob_json:
+            raise ValueError('INVALID BLOB JSON')
+        
         vlist: List[Dict[str, Any]] = cls.blob_json['validators']
         cls.blob_json['sequence'] += 1
         cls.blob_json['expiration'] = (int(time.time()) + cls.expiration) - 946684800
         cls.blob_json['validators'] = [l for l in vlist if l['validation_public_key'] != public_key]
         cls.update()
 
-    def encode_blob(cls) -> str:
-        return base64.b64encode(json.dumps(cls.blob_json).encode("utf-8")).decode("utf-8") 
+    def encode_blob(cls) -> bytes:
+        return base64.b64encode(json.dumps(cls.blob_json).encode("utf-8"))
 
     def decode_blob(cls, blob: str):
         return json.loads(base64.b64decode(blob))
@@ -165,5 +186,39 @@ class ValidationPublisher(object):
 # print(vp.encode_blob())
 # vp.update()
 
-vp = ValidationPublisher('node1')
-vp.create_validator()
+if __name__ == "__main__":
+    if len(sys.argv) < 2:
+        print("Usage: python3 main.py <name> <action> <manifest | pk>")
+        sys.exit()
+
+    name = sys.argv[1]
+    action = sys.argv[2]
+    manifest_or_pk = sys.argv[3]
+
+    try:
+        vp = ValidationPublisher('publisher', name)
+
+        if action == 'add':
+            vp.add_validator(manifest_or_pk)
+
+        if action == 'remove':
+            vp.remove_validator(manifest_or_pk) 
+    except Exception as e:
+        print(e)
+
+# if __name__ == "__main__":
+#     if len(sys.argv) < 2:
+#         print("Usage: python3 main.py <action> <node-name> ")
+#         sys.exit()
+
+#     node_name = sys.argv[1]
+#     action = sys.argv[2]
+#     manifest = sys.argv[3]
+
+#     if action == 'publisher':
+#         vp = ValidationPublisher(node_name)
+#         vp.update()
+
+#     if action == 'validator':
+#         vp = ValidationPublisher(node_name)
+#         vp.create_validator()
