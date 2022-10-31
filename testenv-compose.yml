@@ -3,7 +3,7 @@ version: '3.4'
 services:
   xrpld:
     image: gcr.io/metaxrplorer/icv2:latest
-    container_name: xrpld-genesis
+    container_name: xrpld-standalone
     ports:
       # - "80:80"
       - "6006:6006"

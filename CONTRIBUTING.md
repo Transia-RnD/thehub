@@ -27,7 +27,7 @@ Misc Commands:
 
 `docker build --tag transia/ccache:latest -f builder/ccache.dockerfile .`
 
-`docker cp xrpld-genesis:latest:/var/log/rippled/debug.log debug.log`
+`docker cp xrpld-standalone:latest:/var/log/rippled/debug.log debug.log`
 
 Enter into docker builder for testing.
 
