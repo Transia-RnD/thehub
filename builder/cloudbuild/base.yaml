@@ -1,4 +1,4 @@
-# gcloud builds submit --config cloudbuild.yaml --region=us-central1 --substitutions=_REPO=https://github.com/RichardAH/rippled.git,_BRANCH=PaychanAndEscrowForTokens,_NAME=icv2,_DIR=amendments,_TARGET=genesis
+# gcloud builds submit --config builder/cloudbuild/base.yaml --region=us-central1 --substitutions=_REPO=https://github.com/XRPLF/rippled.git,_BRANCH=develop,_NAME=testnet,_DIR=amendments,_TARGET=standalone
 # NOTE: This is triggered for each sidechain.
 steps:
   # BUILD RIPPLED
@@ -19,9 +19,9 @@ steps:
       '.',
       '--build-arg', 'REPO=$_REPO',
       '--build-arg', 'BRANCH=$_BRANCH',
-      '--build-arg', 'BOOST_ROOT=/io/boost_1_75_0',
-      '--build-arg', 'Boost_LIBRARY_DIRS=/io/boost_1_75_0/libs',
-      '--build-arg', 'BOOST_INCLUDEDIR=/io/boost_1_75_0/boost'
+      '--build-arg', 'BOOST_ROOT=/io/boost_1_79_0',
+      '--build-arg', 'Boost_LIBRARY_DIRS=/io/boost_1_79_0/libs',
+      '--build-arg', 'BOOST_INCLUDEDIR=/io/boost_1_79_0/boost'
     ]
     dir: 'builder/docker/'
   # Push the image
