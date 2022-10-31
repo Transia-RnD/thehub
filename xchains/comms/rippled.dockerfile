@@ -1,7 +1,6 @@
 # docker build -t transia/rippled -f builder/docker/base.dockerfile . --build-arg DIR=issuing_chain
 FROM gcr.io/metaxrplorer/xbridge:base as base
 
-# RIPPLED (BUILD) IS IN /app/rippled
 WORKDIR /app
 
 LABEL maintainer="dangell@transia.co"
