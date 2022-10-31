@@ -26,8 +26,8 @@ ARG BOOST_INCLUDEDIR
 ENV BOOST_INCLUDEDIR $BOOST_INCLUDEDIR
 
 RUN mkdir build && cd build && \
-    cmake .. -Wno-dev && \
-    cmake -Dunity=Off --build . -j8 && \
+    cmake .. -DBoost_NO_BOOST_CMAKE=ON && \
+    make -j8 VERBOSE=1 && \
     strip -s rippled
 
 ENTRYPOINT /bin/bash
