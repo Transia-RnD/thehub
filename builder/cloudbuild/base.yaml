@@ -19,9 +19,10 @@ steps:
       '.',
       '--build-arg', 'REPO=$_REPO',
       '--build-arg', 'BRANCH=$_BRANCH',
-      '--build-arg', 'BOOST_ROOT=/io/boost_1_79_0',
-      '--build-arg', 'Boost_LIBRARY_DIRS=/io/boost_1_79_0/libs',
-      '--build-arg', 'BOOST_INCLUDEDIR=/io/boost_1_79_0/boost'
+      '--build-arg', 'BOOST_ROOT=/io/$_BOOST_DIR',
+      '--build-arg', 'BOOST_ROOT=/io/$_BOOST_DIR',
+      '--build-arg', 'Boost_LIBRARY_DIRS=/io/$_BOOST_DIR/libs',
+      '--build-arg', 'BOOST_INCLUDEDIR=/io/$_BOOST_DIR/boost'
     ]
     dir: 'builder/docker/'
   # Push the image
