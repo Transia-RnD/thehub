@@ -1,6 +1,6 @@
-ARG IMAGE
-FROM ${IMAGE} AS builder
-# FROM gcr.io/metaxrplorer/testnet:base as base
+# ARG IMAGE
+# FROM ${IMAGE} AS builder
+FROM gcr.io/metaxrplorer/testnet:base as base
 
 WORKDIR /app
 
