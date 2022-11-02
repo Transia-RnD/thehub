@@ -1,0 +1,36 @@
+apiVersion: networking.gke.io/v1
+kind: ManagedCertificate
+metadata:
+  name: rippled-cert
+spec:
+  domains:
+    - chain.xrpl.org
+---
+apiVersion: networking.gke.io/v1beta1
+kind: FrontendConfig
+metadata:
+  name: ssl-redirect
+spec:
+  redirectToHttps:
+    enabled: true
+    responseCodeName: PERMANENT_REDIRECT
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.allow-http: 'false'
+    kubernetes.io/ingress.global-static-ip-name: rippled-ip
+    networking.gke.io/managed-certificates: rippled-cert
+  name: rippled-ingress
+spec:
+  tls:
+  - hosts:
+    - chain.xrpl.org
+  rules:
+  - host: chain.xrpl.org
+    http:
+      paths:
+      - backend:
+          serviceName: node1-public
+          servicePort: 6006

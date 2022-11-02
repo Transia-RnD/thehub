@@ -1,0 +1,67 @@
+# POSTGRES CONFIG
+# gcloud compute disks create --size 200GB postgres-disk
+apiVersion: v1
+kind: Service
+metadata:
+  name: node1-public
+  labels:
+    app: node1-deployment
+    tier: rippled
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 6006
+    targetPort: 6006
+  selector:
+    app: node1-deployment
+    tier: rippled
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: node1
+  labels:
+    app: node1-deployment
+    tier: rippled
+spec:
+  type: NodePort
+  ports:
+  - port: 51235
+    targetPort: 51235
+  selector:
+    app: node1-deployment
+    tier: rippled
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: node1-deployment
+  labels:
+    app: node1-deployment
+    tier: rippled
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: node1-deployment
+      tier: rippled
+  template:
+    metadata:
+      labels:
+        app: node1-deployment
+        tier: rippled
+    spec:
+      containers:
+      - name: node1-deployment
+        image: gcr.io/metaxrplorer/mainnet:latest
+        volumeMounts:
+            - name: rippled-db
+              mountPath: /var/lib/rippled/db
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 6006
+        - containerPort: 51235
+      volumes:
+        - name: rippled-db
+          hostPath:
+            path: /var/lib/rippled/db

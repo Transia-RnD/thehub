@@ -1,0 +1,110 @@
+# POSTGRES CONFIG
+# gcloud compute disks create --size 200GB postgres-disk
+apiVersion: v1
+kind: Service
+metadata:
+  name: ipfs-public
+  labels:
+    app: ipfs-deployment
+    tier: ipfs
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 4001
+    targetPort: 4001
+  selector:
+    app: ipfs-deployment
+    tier: ipfs
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ipfs-http
+  labels:
+    app: ipfs-deployment
+    tier: ipfs
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 8080
+    targetPort: 8080
+  selector:
+    app: ipfs-deployment
+    tier: ipfs
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ipfs-ws
+  labels:
+    app: ipfs-deployment
+    tier: ipfs
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 8081
+    targetPort: 8081
+  selector:
+    app: ipfs-deployment
+    tier: ipfs
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ipfs-api
+  labels:
+    app: ipfs-deployment
+    tier: ipfs
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 5001
+    targetPort: 5001
+  selector:
+    app: ipfs-deployment
+    tier: ipfs
+---
+# ethereum DEPLOY
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ipfs-deployment
+  labels:
+    app: ipfs-deployment
+    tier: ipfs
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ipfs-deployment
+      tier: ipfs
+  template:
+    metadata:
+      labels:
+        app: ipfs-deployment
+        tier: ipfs
+    spec:
+      containers:
+      - name: ipfs-deployment
+        image: ipfs/go-ipfs
+        # env:
+            # - name: "NODE1_PWD"
+            #   value: "/home/pwd/password.txt"
+        # volumeMounts:
+            # - name: "ipfs-ethsdk"
+            #   mountPath: "/home/pwd"
+            # - name: ipfs1-pv
+            #   mountPath: /home/ethereum1/geth
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 4001
+        - containerPort: 8080
+        - containerPort: 8081
+        - containerPort: 5001
+      volumes:
+        - name: "ipfs-ethsdk"
+          secret:
+            secretName: "ipfs-key"
+        - name: ipfs1-pv
+          persistentVolumeClaim:
+            claimName: ipfs1-claim
