@@ -61,6 +61,13 @@ spec:
         ports:
         - containerPort: 6006
         - containerPort: 51235
+        resources:
+        requests:
+          memory: "17Gi"
+          cpu: "3"
+        limits:
+          memory: "17Gi"
+          cpu: "3"
       volumes:
         - name: rippled-db
           hostPath:

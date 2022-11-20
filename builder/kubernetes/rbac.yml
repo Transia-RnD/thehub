@@ -22,7 +22,7 @@ metadata:
 subjects:
 # Google Cloud user account
 - kind: User
-  name: gke-security@harpangell.com
+  name: gke-security-groups@harpangell.com
 # Kubernetes service account
 - kind: ServiceAccount
   name: pod-reader
