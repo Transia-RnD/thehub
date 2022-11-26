@@ -13,6 +13,6 @@ RUN chmod +x /entrypoint.sh && \
     echo '#!/bin/bash' > /usr/bin/server_info && echo '/entrypoint.sh server_info' >> /usr/bin/server_info && \
     chmod +x /usr/bin/server_info
 
-EXPOSE 6009 51236 51236/udp
+EXPOSE 6006 51327 51327/udp
 
 ENTRYPOINT [ "/entrypoint.sh" ]
