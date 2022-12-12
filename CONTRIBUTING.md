@@ -27,6 +27,10 @@ Misc Commands:
 
 `docker build --tag transia/ccache:latest -f builder/ccache.dockerfile .`
 
+`docker tag transia/core:latest gcr.io/metaxrplorer/core:latest`
+
+`docker push gcr.io/metaxrplorer/core:latest`
+
 `docker cp xrpld-standalone:latest:/var/log/rippled/debug.log debug.log`
 
 Enter into docker builder for testing.
@@ -35,7 +39,7 @@ Enter into docker builder for testing.
 
 `docker run --rm -it gcr.io/metaxrplorer/ccache:latest`
 
-`docker run -d -it --name icv2 gcr.io/metaxrplorer/icv2:latest`
+`docker run --rm -it --name icv2 gcr.io/metaxrplorer/icv2-standalone:1.0.0`
 
 `docker run --rm -it --name validator gcr.io/metaxrplorer/validator:base`
 
